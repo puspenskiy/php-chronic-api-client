@@ -1,0 +1,23 @@
+{
+  "name": "docdoc/php-chronic-api-client",
+  "authors": [
+    {
+      "name": "A. Grevtsov",
+      "email": "agrevtsov@docdoc.ru"
+    }
+  ],
+  "require": {
+    "php": ">=7.1",
+    "guzzlehttp/guzzle": "~5.3.1|~6.0",
+    "psr/http-message": "^1.0",
+    "psr/log": "~1.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "7.5.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "DocDoc\\RgsApiClient\\": "src/"
+    }
+  }
+}
