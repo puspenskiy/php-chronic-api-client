@@ -1,5 +1,6 @@
 {
   "name": "docdoc/php-chronic-api-client",
+  "license": "MIT",
   "authors": [
     {
       "name": "A. Grevtsov",
