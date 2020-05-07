@@ -1,1 +1,4 @@
 /vendor/
+.idea
+clover.xml
+report.xml
