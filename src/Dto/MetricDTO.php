@@ -22,17 +22,6 @@ class MetricDTO implements \JsonSerializable
 	/** @var array значения метрики */
 	private $values;
 
-	/** @var int - Id пациента в системе b2b */
-	private $externalId;
-
-	/**
-	 * @param int $externalId
-	 */
-	public function __construct(int $externalId)
-	{
-		$this->externalId = $externalId;
-	}
-
 	public function jsonSerialize()
 	{
 		return [
@@ -89,14 +78,6 @@ class MetricDTO implements \JsonSerializable
 	public function setValues(array $values): void
 	{
 		$this->values = $values;
-	}
-
-	/**
-	 * @return int
-	 */
-	public function getExternalId(): int
-	{
-		return $this->externalId;
 	}
 
 }
