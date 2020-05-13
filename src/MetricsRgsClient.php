@@ -4,6 +4,7 @@ namespace DocDoc\RgsApiClient;
 
 use DateTimeImmutable;
 use DocDoc\RgsApiClient\Dto\MetricsDTO;
+use DocDoc\RgsApiClient\Dto\MetricsRangeDTO;
 use DocDoc\RgsApiClient\Enum\MetricTypeEnum;
 use DocDoc\RgsApiClient\Exception\BadRequestRgsException;
 use DocDoc\RgsApiClient\Exception\BaseRgsException;
@@ -68,6 +69,7 @@ class MetricsRgsClient extends AbstractRgsClient
 	 * @return ResponseInterface
 	 * @throws BadRequestRgsException
 	 * @throws BaseRgsException
+	 * @deprecated  12.05.20 - Удалено со стороны РГС.
 	 */
 	public function updateMetrics(MetricsDTO $metricsDTO): ResponseInterface
 	{
@@ -94,20 +96,18 @@ class MetricsRgsClient extends AbstractRgsClient
 	}
 
 	/**
-	 * Изменяет допустимые границы для указанной метрики/метрик
+	 * Изменяет допустимые границы для указанных метрик
 	 *
-	 * @param int    $externalId
-	 * @param string $key
-	 * @param string $value
+	 * @param MetricsRangeDTO $metricsRange
 	 *
 	 * @return ResponseInterface
 	 * @throws BadRequestRgsException
 	 * @throws BaseRgsException
 	 */
-	public function updateMetricsRanges(int $externalId, string $key, string $value): ResponseInterface
+	public function updateMetricsRanges(MetricsRangeDTO $metricsRange): ResponseInterface
 	{
-		$url = '/api/v1/patient/' . $externalId . '/metrics/ranges';
-		$request = $this->buildRequest('PUT', $url, json_encode(['key' => $key, 'value' => $value]));
+		$url = '/api/v1/patient/' . $metricsRange->getExternalId() . '/metrics/ranges';
+		$request = $this->buildRequest('PUT', $url, json_encode($metricsRange));
 
 		return $this->send($request);
 	}

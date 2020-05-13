@@ -46,7 +46,7 @@ class CategoryRgsClient extends AbstractRgsClient
 	 */
 	public function getFormRanges(string $categoryKey): ResponseInterface
 	{
-		$url = '/api/v1/category/' . $categoryKey . '/ranges';
+		$url = '/api/v1/category/' . $categoryKey . '/form/ranges';
 		$request = $this->buildRequest('GET', $url, '');
 
 		return $this->send($request);

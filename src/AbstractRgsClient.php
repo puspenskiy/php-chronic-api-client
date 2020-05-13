@@ -70,6 +70,7 @@ abstract class AbstractRgsClient
 					'request' => $request
 				]
 			);
+
 			$this->validate($response);
 		} catch (GuzzleException $e) {
 			$this->logger->error(
@@ -81,6 +82,7 @@ abstract class AbstractRgsClient
 					'exception' => $e,
 				]
 			);
+			throw new BadRequestRgsException('Критическая Ошибка при запросе к партнёру РГС', 0, $e);
 		} catch (BaseRgsException $e) {
 			$this->logger->error(
 				$e->getMessage(),

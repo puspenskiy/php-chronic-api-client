@@ -243,20 +243,11 @@ class PatientsRgsClientTest extends TestCase
                     },
                     "metricsRanges": [
                       {
-                        "name": "Пульс",
-                        "key": "pulse",
-                        "value": [
-                          {
-                            "sistola": "120",
-                            "diastola": "80"
-                          }
-                        ],
-                        "propertiesLabel": [
-                          {
-                            "sistola": "Систола",
-                            "diastola": "Диастола"
-                          }
-                        ]
+                        "key": "sys",
+                        "name": "Систола",
+                        "parentKey": "ad",
+                        "minValue": "60",
+                        "maxValue": "120"
                       }
                     ],
                     "timezone": "+02:00"

@@ -78,7 +78,7 @@ class PatientRgsClient extends AbstractRgsClient
 	public function getPatient(int $externalId): Patient
 	{
 		$url = '/api/v1/patient/' . $externalId;
-		$request = $this->buildRequest('PUT', $url, '');
+		$request = $this->buildRequest('GET', $url, '');
 
 		return $this->buildPatient($this->send($request));
 	}
