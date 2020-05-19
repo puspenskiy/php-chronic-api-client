@@ -144,6 +144,7 @@ abstract class AbstractRgsClient
 			rtrim($this->apiParams->getHost(), '/') . '/' . ltrim($url, '/'),
 			[
 				'Content-Type' => 'application/json',
+				'Accept' => 'application/json',
 			],
 			$body,
 			'2.0'
