@@ -142,8 +142,11 @@ abstract class AbstractRgsClient
 		return new Request(
 			$method,
 			rtrim($this->apiParams->getHost(), '/') . '/' . ltrim($url, '/'),
-			[],
-			$body
+			[
+				'Content-Type' => 'application/json',
+			],
+			$body,
+			'2.0'
 		);
 	}
 }
