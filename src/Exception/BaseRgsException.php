@@ -64,4 +64,12 @@ abstract class BaseRgsException extends Exception
 		return $this->statusCode;
 	}
 
+	/**
+	 * @return ResponseInterface
+	 */
+	public function getResponse(): ResponseInterface
+	{
+		return $this->response;
+	}
+
 }

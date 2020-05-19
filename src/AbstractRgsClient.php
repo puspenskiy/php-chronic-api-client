@@ -6,9 +6,10 @@ use DocDoc\RgsApiClient\Dto\RgsApiParamsInterface;
 use DocDoc\RgsApiClient\Exception\BadRequestRgsException;
 use DocDoc\RgsApiClient\Exception\BaseRgsException;
 use DocDoc\RgsApiClient\Exception\InternalErrorRgsException;
-use DocDoc\RgsApiClient\Exception\NotFoundRgsException;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -32,8 +33,6 @@ abstract class AbstractRgsClient
 	private $logger;
 
 	/**
-	 * DocDocJsonRpcApi constructor.
-	 *
 	 * @param ClientInterface       $client
 	 * @param RgsApiParamsInterface $apiParams
 	 * @param LoggerInterface       $logger
@@ -58,38 +57,27 @@ abstract class AbstractRgsClient
 	 */
 	protected function send(RequestInterface $request): ResponseInterface
 	{
-		$response = null;
 		try {
-			$response = $this->client->send($request);
-
+			$response = $this->sendRequest($request);
+			$request->getBody()->rewind();
 			$this->logger->info(
 				'Отправлен запрос партнеру РГС',
 				[
 					'partnerId' => $this->apiParams->getPartnerId(),
 					'url' => $request->getUri(),
-					'request' => $request
+					'request' => $request->getBody()->getContents()
 				]
 			);
-
-			$this->validate($response);
-		} catch (GuzzleException $e) {
-			$this->logger->error(
-				'Критическая Ошибка при запросе к партнёру РГС',
-				[
-					'partnerId' => $this->apiParams->getPartnerId(),
-					'url' => $request->getUri(),
-					'request' => $request,
-					'exception' => $e,
-				]
-			);
-			throw new BadRequestRgsException('Критическая Ошибка при запросе к партнёру РГС', 0, $e);
 		} catch (BaseRgsException $e) {
+			$request->getBody()->rewind();
+			$response = $e->getResponse();
+			$response->getBody()->rewind();
 			$this->logger->error(
 				$e->getMessage(),
 				[
 					'partnerId' => $this->apiParams->getPartnerId(),
 					'url' => $request->getUri(),
-					'request' => $request,
+					'request' => $request->getBody()->getContents(),
 					'responseBody' => $response ? $response->getBody()->getContents() : null,
 					'exception' => $e,
 				]
@@ -100,31 +88,51 @@ abstract class AbstractRgsClient
 	}
 
 	/**
-	 * Валидация ответа
+	 * Отправка запроса и отлов ошибок
 	 *
-	 * Специфика json Rpc в том что он всегда возвращает 200.
+	 * @param RequestInterface $request
 	 *
-	 * @param ResponseInterface|null $response
-	 *
+	 * @return ResponseInterface
 	 * @throws BadRequestRgsException
 	 * @throws InternalErrorRgsException
-	 * @throws NotFoundRgsException
 	 */
-	private function validate(?ResponseInterface $response): void
+	public function sendRequest(RequestInterface $request): ResponseInterface
 	{
-		if ($response === null) {
-			throw new BadRequestRgsException('РГС сервис не прислал ответ.');
-		}
-		switch ($response->getStatusCode()) {
-			case 200:
-			case 201:
-				break;
-			case 400:
-				throw new InternalErrorRgsException($response);
-			case 404:
-				throw new NotFoundRgsException($response);
-			default:
-				throw new BadRequestRgsException($response);
+		try {
+			$response = $this->client->send($request);
+			if ($response === null) {
+				throw new BadRequestRgsException('РГС сервис не прислал ответ.');
+			}
+			return $response;
+		} catch (ClientException $e) {
+			throw new InternalErrorRgsException($e->getResponse(), 'Ошибка 4xx при запросе к партнёру РГС');
+		} catch (ServerException $e) {
+			$request->getBody()->rewind();
+			$response = $e->getResponse();
+			$response->getBody()->rewind();
+			$this->logger->error(
+				'Ошибка 5xx при запросе к партнёру РГС',
+				[
+					'partnerId' => $this->apiParams->getPartnerId(),
+					'url' => $request->getUri(),
+					'request' => $request->getBody()->getContents(),
+					'responseBody' => $response ? $response->getBody()->getContents() : null,
+					'exception' => $e,
+				]
+			);
+			throw new BadRequestRgsException('Ошибка 5xx при запросе к партнёру РГС', 0, $e);
+		} catch (GuzzleException $e) {
+			$this->logger->error(
+				'Критическая не известная ошибка при запросе к партнёру РГС',
+				[
+					'partnerId' => $this->apiParams->getPartnerId(),
+					'url' => $request->getUri(),
+					'request' => $request->getBody()->getContents(),
+					'responseBody' => $response ? $response->getBody()->getContents() : null,
+					'exception' => $e,
+				]
+			);
+			throw new BadRequestRgsException('Критическая ошибка при запросе к партнёру РГС', 0, $e);
 		}
 	}
 
