@@ -163,7 +163,7 @@ class MetricsRgsClientTest extends TestCase
                      "values": [
                        {
                          "value": "10",
-                         "datetime": "2020-05-13T05:57:43.03Z",
+                         "datetime": "2020-05-18T11:31:09.869Z",
                          "minValue": "8",
                          "maxValue": "12"
                        }

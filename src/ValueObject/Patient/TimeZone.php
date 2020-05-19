@@ -12,12 +12,46 @@ class TimeZone implements \JsonSerializable
 	/** @var string */
 	private $value;
 
+	private static $availableTimezone = [
+		-720,
+		-660,
+		-600,
+		-540,
+		-480,
+		-420,
+		-360,
+		-300,
+		-240,
+		-210,
+		-180,
+		-120,
+		-60,
+		0,
+		60,
+		120,
+		180,
+		210,
+		240,
+		270,
+		300,
+		330,
+		345,
+		360,
+		420,
+		480,
+		540,
+		570,
+		600,
+		660,
+		720,
+	];
+
 	/**
-	 * @param string $timeZone
+	 * @param int $timeZone
 	 *
 	 * @throws ValidationException
 	 */
-	public function __construct(string $timeZone)
+	public function __construct(int $timeZone)
 	{
 		$this->value = $timeZone;
 		if ($this->validate() === false) {
@@ -28,7 +62,7 @@ class TimeZone implements \JsonSerializable
 
 	private function validate(): bool
 	{
-		return preg_match('/^([+-](?:2[0-3]|[01][0-9]):[0-5][0-9])$/', $this->value);
+		return in_array($this->value, self::$availableTimezone, true);
 	}
 
 	public function jsonSerialize()

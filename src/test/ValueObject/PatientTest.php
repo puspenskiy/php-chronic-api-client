@@ -43,10 +43,11 @@ class PatientTest extends TestCase
 		$patient->setMetadata(
 			new MetaData($jsonPatientObject->metadata->productId, $jsonPatientObject->metadata->contractId)
 		);
-		$patient->setTimezone(new TimeZone($jsonPatientObject->timezone));
-		$expected = json_encode($patient);
+		$patient->setTimezone(new TimeZone(120));
+		$actual = json_encode($patient);
 		//сброс красивого форматирования
-		$actual = json_encode($jsonPatientObject);
+		$jsonPatientObject->timezone = $patient->getTimezone()->jsonSerialize();
+		$expected = json_encode($jsonPatientObject);
 		$this->assertEquals(
 			$expected,
 			$actual,

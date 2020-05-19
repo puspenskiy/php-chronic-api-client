@@ -213,7 +213,7 @@ class PatientsRgsClientTest extends TestCase
                         "productId": 13,
                         "contractId": 10293
                     },
-                    "timezone": "+02:00",
+                    "timezone": 120,
                     "active": true,
                     "monitoringEnabled": true
                 }'
@@ -250,7 +250,7 @@ class PatientsRgsClientTest extends TestCase
                         "maxValue": "120"
                       }
                     ],
-                    "timezone": "+02:00"
+                    "timezone": "120"
                   }'
 			]
 		];
