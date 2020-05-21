@@ -57,7 +57,7 @@ class MetricsRgsClientTest extends TestCase
 	{
 		$jsonMetricsObject = json_decode($json, true);
 		$response = $this->client->getMetrics(1);
-		$this->assertEquals(json_decode($response->getBody()->getContents(), true), $jsonMetricsObject);
+        $this->assertEquals(json_decode($response->getBody()->getContents(), true), $jsonMetricsObject);
 	}
 
 	/**
@@ -139,7 +139,8 @@ class MetricsRgsClientTest extends TestCase
                      "value": "120",
                      "parentName": "Артериальное давление",
                      "parentKey": "ad",
-                     "measurement": "мм рт. ст."
+                     "measurement": "мм рт. ст.",
+                     "datetime": "2020-05-21T09:32:40.85Z"
                    }
                  ]'
 			]
@@ -163,7 +164,7 @@ class MetricsRgsClientTest extends TestCase
                      "values": [
                        {
                          "value": "10",
-                         "datetime": "2020-05-18T11:31:09.869Z",
+                         "datetime": "2020-05-21T09:32:40.846Z",
                          "minValue": "8",
                          "maxValue": "12"
                        }
@@ -188,7 +189,8 @@ class MetricsRgsClientTest extends TestCase
                     "value": "120",
                     "parentName": "Артериальное давление",
                     "parentKey": "ad",
-                    "measurement": "мм рт. ст."
+                    "measurement": "мм рт. ст.",
+                    "datetime": "2020-05-21T09:32:40.856Z"
                   }
                  ]'
 			]
