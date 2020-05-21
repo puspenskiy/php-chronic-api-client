@@ -18,6 +18,11 @@ use Psr\Http\Message\ResponseInterface;
  */
 class MetricsRgsClient extends AbstractRgsClient
 {
+    /**
+     * Формат даты для фильтра получения данных по пациенту.
+     */
+    protected const FROM_DATE_FORMAT = 'Y-m-d\TH:i:s';
+
 	/**
 	 * Получение данных анкетирования по указанному пациенту по фильтрам даты и по типу длины данных день|неделя|месяц
 	 *
@@ -37,7 +42,7 @@ class MetricsRgsClient extends AbstractRgsClient
 	{
 		$url = '/api/v1/patient/' . $externalId . '/metrics?type=' . $type;
 		if ($from !== null) {
-			$url .= '&from=' . urlencode($from->format(DATE_ATOM));
+			$url .= '&from=' . urlencode($from->format(self::FROM_DATE_FORMAT));
 		}
 		$request = $this->buildRequest('GET', $url, '');
 		return $this->send($request);
