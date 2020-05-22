@@ -4,6 +4,8 @@ namespace DocDoc\RgsApiClient\Dto;
 
 /**
  * Объект метрик для отправки данных в РГС
+ *
+ * @deprecated 22.05.20 - Не используется на стороне РГС
  */
 class MetricsDTO implements \JsonSerializable
 {

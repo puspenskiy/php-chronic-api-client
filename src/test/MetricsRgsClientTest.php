@@ -71,7 +71,7 @@ class MetricsRgsClientTest extends TestCase
 	 */
 	public function testCreate(string $requestData, string $expectedResponseData): void
 	{
-		$metricsDto = $this->buildMetricsDTO(json_decode($requestData, false));
+		$metricsDto = $this->buildMetricDTO(json_decode($requestData, false));
 		$response = $this->client->createMetrics($metricsDto);
 		$this->assertEquals(
 			json_decode($response->getBody()->getContents(), true),
@@ -132,17 +132,20 @@ class MetricsRgsClientTest extends TestCase
                    "date": "1990-03-27",
                    "time": "00:30:00.000Z"
                  }',
-				'[
-                   {
-                     "name": "Систола",
-                     "key": "sys",
-                     "value": "120",
-                     "parentName": "Артериальное давление",
-                     "parentKey": "ad",
-                     "measurement": "мм рт. ст.",
-                     "datetime": "2020-05-21T09:32:40.85Z"
-                   }
-                 ]'
+				'{
+                    "abnormal": false,
+                    "items": [
+                        {
+                            "name": "Систола",
+                            "key": "sys",
+                            "value": "120",
+                            "parentName": "Артериальное давление",
+                            "parentKey": "ad",
+                            "measurement": "мм рт. ст.",
+                            "datetime": "2020-05-22T11:59:45.641Z"
+                        }
+                    ]
+                }'
 			]
 		];
 	}
@@ -164,7 +167,7 @@ class MetricsRgsClientTest extends TestCase
                      "values": [
                        {
                          "value": "10",
-                         "datetime": "2020-05-21T09:32:40.846Z",
+                         "datetime": "2020-05-22T11:59:45.637Z",
                          "minValue": "8",
                          "maxValue": "12"
                        }
@@ -190,7 +193,7 @@ class MetricsRgsClientTest extends TestCase
                     "parentName": "Артериальное давление",
                     "parentKey": "ad",
                     "measurement": "мм рт. ст.",
-                    "datetime": "2020-05-21T09:32:40.856Z"
+                    "datetime": "2020-05-22T11:59:45.646Z"
                   }
                  ]'
 			]
@@ -243,13 +246,12 @@ class MetricsRgsClientTest extends TestCase
 	/**
 	 * @param \stdClass $requestData - данные для запроса создания.
 	 *
-	 * @return MetricsDTO
+	 * @return MetricDTO
 	 * @throws \Exception
 	 */
-	private function buildMetricsDTO(\stdClass $requestData): MetricsDTO
+	private function buildMetricDTO(\stdClass $requestData): MetricDTO
 	{
-		$metrics = new MetricsDTO(1);
-		$metric = new MetricDTO();
+		$metric = new MetricDTO(1);
 		$metric->setDateTime(new \DateTimeImmutable($requestData->date . ' ' . $requestData->time));
 		$metric->setSource($requestData->source);
 		$metric->setValues(
@@ -258,8 +260,7 @@ class MetricsRgsClientTest extends TestCase
 				'value' => $requestData->values[0]->value,
 			]
 		);
-		$metrics->addMetric($metric);
-		return $metrics;
+		return $metric;
 	}
 
 	/**

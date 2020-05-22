@@ -3,6 +3,7 @@
 namespace DocDoc\RgsApiClient;
 
 use DateTimeImmutable;
+use DocDoc\RgsApiClient\Dto\MetricDTO;
 use DocDoc\RgsApiClient\Dto\MetricsDTO;
 use DocDoc\RgsApiClient\Dto\MetricsRangeDTO;
 use DocDoc\RgsApiClient\Enum\MetricTypeEnum;
@@ -48,20 +49,20 @@ class MetricsRgsClient extends AbstractRgsClient
 		return $this->send($request);
 	}
 
-	/**
-	 * Добавление данных анкетирования
-	 * Метод является прокси, валидация и сборка объекта не нужна
-	 *
-	 * @param MetricsDTO $metricsDTO
-	 *
-	 * @return ResponseInterface
-	 * @throws BadRequestRgsException
-	 * @throws BaseRgsException
-	 */
-	public function createMetrics(MetricsDTO $metricsDTO): ResponseInterface
+    /**
+     * Добавление данных анкетирования
+     * Метод является прокси, валидация и сборка объекта не нужна
+     *
+     * @param MetricDTO $metricDTO
+     *
+     * @return ResponseInterface
+     * @throws BadRequestRgsException
+     * @throws BaseRgsException
+     */
+	public function createMetrics(MetricDTO $metricDTO): ResponseInterface
 	{
-		$url = '/api/v1/patient/' . $metricsDTO->getExternalId() . '/metrics';
-		$request = $this->buildRequest('POST', $url, json_encode($metricsDTO));
+		$url = '/api/v1/patient/' . $metricDTO->getExternalId() . '/metrics';
+		$request = $this->buildRequest('POST', $url, json_encode($metricDTO));
 		return $this->send($request);
 	}
 
