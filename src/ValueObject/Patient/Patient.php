@@ -22,7 +22,7 @@ class Patient implements \JsonSerializable
 	/**@var string - имя */
 	private $firstName;
 
-	/**@var  string - отчество */
+	/**@var string|null - отчество */
 	private $patronymic;
 
 	/** @var string телефон */
@@ -88,18 +88,18 @@ class Patient implements \JsonSerializable
 	}
 
 	/**
-	 * @return string
+	 * @return string|null
 	 * @see CategoryEnum
 	 */
-	public function getPatronymic(): string
+	public function getPatronymic(): ?string
 	{
 		return $this->patronymic;
 	}
 
 	/**
-	 * @param string $patronymic
+	 * @param string|null $patronymic
 	 */
-	public function setPatronymic(string $patronymic): void
+	public function setPatronymic(?string $patronymic): void
 	{
 		$this->patronymic = $patronymic;
 	}
@@ -234,7 +234,7 @@ class Patient implements \JsonSerializable
 	public function validate(): bool
 	{
 		$errors = [];
-		foreach ($this->getFields() as $name => $value) {
+		foreach ($this->getRequiredFields() as $name => $value) {
 			if ($value === null) {
 				$errors[$name] = 'Свойство ' . $name . 'не может быть пустым.';
 			}
@@ -259,8 +259,26 @@ class Patient implements \JsonSerializable
 		}
 		$fields = get_object_vars($this);
 		unset($fields['errors'], $fields['fields']);
+
+		if ($this->patronymic === null) {
+		    unset($fields['patronymic']);
+        }
+
 		$this->fields = $fields;
 		return $this->fields;
+	}
+
+    /**
+     * Массив обязательных значений для валидации.
+     *
+     * @return array
+     */
+    private function getRequiredFields(): array
+    {
+        $fields = $this->getFields();
+        unset($fields['patronymic']);
+
+        return $fields;
 	}
 
 	/**

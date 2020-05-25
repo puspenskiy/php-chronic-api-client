@@ -25,7 +25,7 @@ class PatientBuildService
 		$patient->setCategoryKey($jsonPatientObject->category->key);
 		$patient->setFirstName($jsonPatientObject->firstName);
 		$patient->setPhone($jsonPatientObject->phone);
-		$patient->setPatronymic($jsonPatientObject->patronymic);
+		$patient->setPatronymic($jsonPatientObject->patronymic ?? null);
 		$patient->setExternalId($jsonPatientObject->externalId);
 		if ($jsonPatientObject->active === false) {
 			$patient->deactivate();

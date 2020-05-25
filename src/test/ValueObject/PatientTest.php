@@ -30,7 +30,7 @@ class PatientTest extends TestCase
 		$patient->setCategoryKey($jsonPatientObject->categoryKey);
 		$patient->setFirstName($jsonPatientObject->firstName);
 		$patient->setPhone($jsonPatientObject->phone);
-		$patient->setPatronymic($jsonPatientObject->patronymic);
+		$patient->setPatronymic($jsonPatientObject->patronymic ?? null);
 		$patient->setExternalId($jsonPatientObject->externalId);
 		if ($jsonPatientObject->active === false) {
 			$patient->deactivate();
@@ -120,6 +120,22 @@ class PatientTest extends TestCase
                     "categoryKey": "diabetic",
                     "firstName": "Иван",
                     "patronymic": "Иванов",
+                    "phone": "+7 (904) 999-99-99",
+                    "externalId": -100000000,
+                    "metadata": {
+                        "productId": 13,
+                        "contractId": 10293
+                    },
+                    "timezone": "+02:00",
+                    "active": false,
+                    "monitoringEnabled": false,
+                    "metricsRanges":[]
+                }'
+			],
+			[
+				'{
+                    "categoryKey": "diabetic",
+                    "firstName": "Иван",
                     "phone": "+7 (904) 999-99-99",
                     "externalId": -100000000,
                     "metadata": {
