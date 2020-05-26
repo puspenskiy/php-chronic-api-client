@@ -37,7 +37,7 @@ class MetricDTO implements \JsonSerializable
 	{
 		return [
 			'date' => $this->getDateTime()->format('Y-m-d'),
-			'time' => $this->getDateTime()->format('H:i:s.000\Z'),
+			'time' => $this->getDateTime()->format('H:i'),
 			'source' => $this->getSource(),
 			'values' => $this->getValues(),
 		];
