@@ -207,10 +207,9 @@ class MetricsRgsClientTest extends TestCase
 		return [
 			[
 				'{
-                    "key": "sys",
-                    "minValue": "60",
-                    "maxValue": "120"
-                   }',
+                   "key": "pulse_max",
+                   "value": "120"
+                 }',
 				'{
                    "id": -100000000,
                    "category": {
@@ -273,8 +272,7 @@ class MetricsRgsClientTest extends TestCase
 		$metricsRange = new MetricsRangeDTO(1);
 		$metricRange = new MetricRangeDTO();
 		$metricRange->setKey($requestData->key);
-		$metricRange->setMaxValue($requestData->maxValue);
-		$metricRange->setMinValue($requestData->minValue);
+		$metricRange->setValue($requestData->value);
 		$metricsRange->addMetricRange($metricRange);
 		return $metricsRange;
 	}

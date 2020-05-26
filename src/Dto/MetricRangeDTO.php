@@ -9,11 +9,8 @@ class MetricRangeDTO implements \JsonSerializable
 	/**@var string - ключ метрики */
 	private $key;
 
-	/** @var string минимальное значение метрики */
-	private $minValue;
-
 	/** @var string  максимальное значение метрики */
-	private $maxValue;
+	private $value;
 
 	/**
 	 * @inheritDoc
@@ -42,33 +39,17 @@ class MetricRangeDTO implements \JsonSerializable
 	/**
 	 * @return string
 	 */
-	public function getMinValue(): string
+	public function getValue(): string
 	{
-		return $this->minValue;
+		return $this->value;
 	}
 
 	/**
-	 * @param string $minValue
+	 * @param string $value
 	 */
-	public function setMinValue(string $minValue): void
+	public function setValue(string $value): void
 	{
-		$this->minValue = $minValue;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getMaxValue(): string
-	{
-		return $this->maxValue;
-	}
-
-	/**
-	 * @param string $maxValue
-	 */
-	public function setMaxValue(string $maxValue): void
-	{
-		$this->maxValue = $maxValue;
+		$this->value = $value;
 	}
 
 }
