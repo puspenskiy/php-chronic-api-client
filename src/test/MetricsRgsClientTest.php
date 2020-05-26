@@ -1,10 +1,9 @@
 <?php
 
-namespace DocDoc\RgsApiClient\test\ValueObject;
+namespace DocDoc\RgsApiClient\test;
 
 use DocDoc\RgsApiClient\Dto\MetricDTO;
 use DocDoc\RgsApiClient\Dto\MetricRangeDTO;
-use DocDoc\RgsApiClient\Dto\MetricsDTO;
 use DocDoc\RgsApiClient\Dto\MetricsRangeDTO;
 use DocDoc\RgsApiClient\Dto\RgsApiParamsInterface;
 use DocDoc\RgsApiClient\Exception\BadRequestRgsException;
@@ -142,7 +141,7 @@ class MetricsRgsClientTest extends TestCase
                             "parentName": "Артериальное давление",
                             "parentKey": "ad",
                             "measurement": "мм рт. ст.",
-                            "datetime": "2020-05-22T11:59:45.641Z"
+                            "datetime": "2020-05-25T15:25:18.29Z"
                         }
                     ]
                 }'
@@ -167,7 +166,7 @@ class MetricsRgsClientTest extends TestCase
                      "values": [
                        {
                          "value": "10",
-                         "datetime": "2020-05-22T11:59:45.637Z",
+                         "datetime": "2020-05-25T15:25:18.281Z",
                          "minValue": "8",
                          "maxValue": "12"
                        }
@@ -193,7 +192,7 @@ class MetricsRgsClientTest extends TestCase
                     "parentName": "Артериальное давление",
                     "parentKey": "ad",
                     "measurement": "мм рт. ст.",
-                    "datetime": "2020-05-22T11:59:45.646Z"
+                    "datetime": "2020-05-25T15:25:18.296Z"
                   }
                  ]'
 			]

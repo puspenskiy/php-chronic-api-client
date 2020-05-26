@@ -1,18 +1,17 @@
 <?php
 
-namespace DocDoc\RgsApiClient\test\ValueObject;
+namespace DocDoc\RgsApiClient\test;
 
 use DocDoc\RgsApiClient\Dto\RgsApiParamsInterface;
-use DocDoc\RgsApiClient\Enum\CategoryEnum;
 use DocDoc\RgsApiClient\Exception\BadRequestRgsException;
 use DocDoc\RgsApiClient\Exception\BaseRgsException;
 use DocDoc\RgsApiClient\PatientRgsClient;
-use DocDoc\RgsApiClient\Service\PatientBuildService;
 use DocDoc\RgsApiClient\ValueObject\Patient\MetaData;
 use DocDoc\RgsApiClient\ValueObject\Patient\Patient;
 use DocDoc\RgsApiClient\ValueObject\Patient\TimeZone;
 use GuzzleHttp\Client;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -34,8 +33,7 @@ class PatientsRgsClientTest extends TestCase
 		$this->client = new PatientRgsClient(
 			new Client(),
 			$rgsApiParams,
-			$this->createMock(LoggerInterface::class),
-			new PatientBuildService()
+			$this->createMock(LoggerInterface::class)
 		);
 	}
 
@@ -68,15 +66,8 @@ class PatientsRgsClientTest extends TestCase
 			new MetaData($jsonPatientObject->metadata->productId, $jsonPatientObject->metadata->contractId)
 		);
 		$patient->setTimezone(new TimeZone($jsonPatientObject->timezone));
-
 		$patientResponse = $this->client->createPatient($patient);
-		//В данный момент мок сервер отдаёт ответ с полями которые не  могут быть у только что созданного пациента.
-		// и не отдаёт категорию пациента
-		$patientResponse->setMetricsRanges([]);
-		$patientResponse->setCategoryKey(CategoryEnum::COVID);
-		$this->assertTrue($patientResponse->validate(), 'При создании пациента получен не валидный объект.');
-
-		$this->assertEquals($patient, $patientResponse);
+		$this->checkPatient($patient, $patientResponse);
 	}
 
 	/**
@@ -110,12 +101,8 @@ class PatientsRgsClientTest extends TestCase
 		$patient->setTimezone(new TimeZone($jsonPatientObject->timezone));
 
 		$patientResponse = $this->client->updatePatient($patient);
-		//В данный момент мок сервер отдаёт ответ с полями которые не  могут быть у только что созданного пациента.
-		// и не отдаёт категорию пациента
-		$patientResponse->setMetricsRanges([]);
-		$patientResponse->setCategoryKey(CategoryEnum::COVID);
-		$this->assertTrue($patientResponse->validate(), 'При обновлении пациента получен не валидный объект.');
-		$this->assertEquals($patient, $patientResponse);
+
+		$this->checkPatient($patient, $patientResponse);
 	}
 
 	/**
@@ -132,13 +119,10 @@ class PatientsRgsClientTest extends TestCase
 		$jsonPatientObject = json_decode($jsonPatient, false);
 
 		$patient = $this->client->getPatient(100);
-		//В Моке АПИ не корректный ответ  поправим в тесте.
-		$patient->setCategoryKey(CategoryEnum::COVID);
-		$expectedObject = json_decode(json_encode($patient), false);
+		$expectedObject = json_decode($patient->getBody()->getContents(), false);
 		$fields = get_object_vars($jsonPatientObject);
 		//этих полей в ответе нет, все остальные должны совпадать
-		unset($fields['categoryKey'], $fields['id']);
-
+		unset($fields['categoryKey']);
 		foreach ($fields as $field => $value) {
 			$this->assertEquals($expectedObject->$field, $value);
 		}
@@ -158,13 +142,10 @@ class PatientsRgsClientTest extends TestCase
 		$jsonPatientObject = json_decode($jsonPatient, false);
 
 		$patient = $this->client->activate(100);
-		//В Моке АПИ не корректный ответ  поправим в тесте.
-		$patient->setCategoryKey(CategoryEnum::COVID);
-		$expectedObject = json_decode(json_encode($patient), false);
+		$expectedObject = json_decode($patient->getBody()->getContents(), false);
 		$fields = get_object_vars($jsonPatientObject);
 		//этих полей в ответе нет, все остальные должны совпадать
 		unset($fields['categoryKey'], $fields['id']);
-
 		foreach ($fields as $field => $value) {
 			$this->assertEquals($expectedObject->$field, $value);
 		}
@@ -185,11 +166,10 @@ class PatientsRgsClientTest extends TestCase
 
 		$patient = $this->client->activate(100);
 		//В Моке АПИ не корректный ответ  поправим в тесте.
-		$patient->setCategoryKey(CategoryEnum::COVID);
-		$expectedObject = json_decode(json_encode($patient), false);
+		$expectedObject = json_decode($patient->getBody()->getContents(), false);
 		$fields = get_object_vars($jsonPatientObject);
 		//этих полей в ответе нет, все остальные должны совпадать
-		unset($fields['categoryKey'], $fields['id']);
+		unset($fields['categoryKey']);
 
 		foreach ($fields as $field => $value) {
 			$this->assertEquals($expectedObject->$field, $value);
@@ -204,7 +184,7 @@ class PatientsRgsClientTest extends TestCase
 		return [
 			[
 				'{
-                    "categoryKey": "covid",
+                    "categoryKey": "diabetic",
                     "firstName": "Иван",
                     "patronymic": "Иванов",
                     "phone": "+7 (904) 999-99-99",
@@ -230,7 +210,7 @@ class PatientsRgsClientTest extends TestCase
 			[
 				'{
                     "id": -100000000,
-                    "categoryKey": "covid",
+                    "categoryKey": "diabetic",
                     "firstName": "Иван",
                     "patronymic": "Иванов",
                     "phone": "+7 (904) 999-99-99",
@@ -250,9 +230,22 @@ class PatientsRgsClientTest extends TestCase
                         "maxValue": "120"
                       }
                     ],
-                    "timezone": "120"
+                    "timezone": "+02:00"
                   }'
 			]
 		];
+	}
+
+	private function checkPatient(Patient $requestPatient, ResponseInterface $responsePatient)
+	{
+		$responsePatient = json_decode($responsePatient->getBody()->getContents(), true);
+
+		$this->assertEquals($responsePatient['category']['key'], $requestPatient->getCategoryKey());
+		$this->assertEquals($responsePatient['firstName'], $requestPatient->getFirstName());
+		$this->assertEquals($responsePatient['phone'], $requestPatient->getPhone());
+		$this->assertEquals($responsePatient['externalId'], $requestPatient->getExternalId());
+		$this->assertEquals($responsePatient['patronymic'], $requestPatient->getPatronymic());
+		$this->assertEquals($responsePatient['active'], $requestPatient->isActive());
+		$this->assertEquals($responsePatient['monitoringEnabled'], $requestPatient->isMonitoringEnabled());
 	}
 }

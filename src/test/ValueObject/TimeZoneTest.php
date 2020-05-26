@@ -1,6 +1,6 @@
 <?php
 
-namespace DocDoc\RgsApiClient\ValueObject\test;
+namespace DocDoc\RgsApiClient\test\ValueObject;
 
 use DocDoc\RgsApiClient\Exception\ValidationException;
 use DocDoc\RgsApiClient\ValueObject\Patient\TimeZone;

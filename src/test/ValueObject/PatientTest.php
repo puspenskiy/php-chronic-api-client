@@ -1,6 +1,6 @@
 <?php
 
-namespace DocDoc\RgsApiClient\ValueObject\test;
+namespace DocDoc\RgsApiClient\test\ValueObject;
 
 use DocDoc\RgsApiClient\Exception\ValidationException;
 use DocDoc\RgsApiClient\ValueObject\Patient\MetaData;
@@ -47,6 +47,7 @@ class PatientTest extends TestCase
 		$actual = json_encode($patient);
 		//сброс красивого форматирования
 		$jsonPatientObject->timezone = $patient->getTimezone()->jsonSerialize();
+		unset($jsonPatientObject->metricsRanges);
 		$expected = json_encode($jsonPatientObject);
 		$this->assertEquals(
 			$expected,

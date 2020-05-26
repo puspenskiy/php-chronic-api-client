@@ -1,6 +1,6 @@
 <?php
 
-namespace DocDoc\RgsApiClient\test\ValueObject;
+namespace DocDoc\RgsApiClient\test;
 
 use DocDoc\RgsApiClient\CategoryRgsClient;
 use DocDoc\RgsApiClient\Dto\RgsApiParamsInterface;

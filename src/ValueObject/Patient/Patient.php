@@ -8,6 +8,7 @@ use DocDoc\RgsApiClient\Exception\ValidationException;
 /**
  * Объект пациента РГС
  * Валидируется, имеет Json представление согласно спецификации, имеет методы управления состоянием
+ * Применяется для создания пациента в сервисе РГС
  *
  * @see https://chronicmonitor.docs.apiary.io/#reference/patients/apiv1patient/post
  */
@@ -42,9 +43,6 @@ class Patient implements \JsonSerializable
 
 	/** @var bool - Статус активности пуш/робот систем для этого пациента */
 	private $monitoringEnabled = true;
-
-	/** @var array - значения метрик */
-	private $metricsRanges = [];
 
 	/** @var array - Поля для валидации и представления */
 	private $fields;
@@ -289,22 +287,6 @@ class Patient implements \JsonSerializable
 	public function getErrors(): array
 	{
 		return $this->errors;
-	}
-
-	/**
-	 * @return array
-	 */
-	public function getMetricsRanges(): array
-	{
-		return $this->metricsRanges;
-	}
-
-	/**
-	 * @param array $metricsRanges
-	 */
-	public function setMetricsRanges(array $metricsRanges): void
-	{
-		$this->metricsRanges = $metricsRanges;
 	}
 }
 
