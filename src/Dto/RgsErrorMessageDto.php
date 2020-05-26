@@ -18,8 +18,9 @@ class RgsErrorMessageDto
 
 	public function __construct(ResponseInterface $response)
 	{
-		$this->body = json_decode($response->getBody()->getContents(), false);
-		$this->contents = $response->getBody()->getContents();
+	    $response->getBody()->rewind();
+        $this->contents = $response->getBody()->getContents();
+        $this->body = json_decode($this->contents, false);
 	}
 
 	public function getMessage(): string

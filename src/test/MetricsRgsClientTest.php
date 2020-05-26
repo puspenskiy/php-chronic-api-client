@@ -56,7 +56,11 @@ class MetricsRgsClientTest extends TestCase
 	{
 		$jsonMetricsObject = json_decode($json, true);
 		$response = $this->client->getMetrics(1);
-        $this->assertEquals(json_decode($response->getBody()->getContents(), true), $jsonMetricsObject);
+        $responseArray = json_decode($response->getBody()->getContents(), true);
+        $this->assertArrayHasKey('datetime', $responseArray[0]['values'][0]);
+        $this->assertStringMatchesFormat('%d-%d-%dT%d:%d:%d.%dZ', $responseArray[0]['values'][0]['datetime']);
+        unset($responseArray[0]['values'][0]['datetime'], $jsonMetricsObject[0]['values'][0]['datetime']);
+        $this->assertEquals($responseArray, $jsonMetricsObject);
 	}
 
 	/**
@@ -72,9 +76,14 @@ class MetricsRgsClientTest extends TestCase
 	{
 		$metricsDto = $this->buildMetricDTO(json_decode($requestData, false));
 		$response = $this->client->createMetrics($metricsDto);
-		$this->assertEquals(
-			json_decode($response->getBody()->getContents(), true),
-			json_decode($expectedResponseData, true)
+        $expectedResponseDataArray = json_decode($expectedResponseData, true);
+        $responseArray = json_decode($response->getBody()->getContents(), true);
+        $this->assertArrayHasKey('datetime', $responseArray['items'][0]);
+        $this->assertStringMatchesFormat('%d-%d-%dT%d:%d:%d.%dZ', $responseArray['items'][0]['datetime']);
+        unset($responseArray['items'][0]['datetime'], $expectedResponseDataArray['items'][0]['datetime']);
+        $this->assertEquals(
+			$responseArray,
+            $expectedResponseDataArray
 		);
 	}
 
@@ -88,9 +97,14 @@ class MetricsRgsClientTest extends TestCase
 	public function testGetLast(string $expectedResponseData): void
 	{
 		$response = $this->client->getMetricsLast(1);
-		$this->assertEquals(
-			json_decode($response->getBody()->getContents(), true),
-			json_decode($expectedResponseData, true)
+        $expectedResponseDataArray = json_decode($expectedResponseData, true);
+        $responseArray = json_decode($response->getBody()->getContents(), true);
+        $this->assertArrayHasKey('datetime', $responseArray[0]);
+        $this->assertStringMatchesFormat('%d-%d-%dT%d:%d:%d.%dZ', $responseArray[0]['datetime']);
+        unset($responseArray[0]['datetime'], $expectedResponseDataArray[0]['datetime']);
+        $this->assertEquals(
+			$responseArray,
+            $expectedResponseDataArray
 		);
 	}
 
