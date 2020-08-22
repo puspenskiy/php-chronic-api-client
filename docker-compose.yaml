@@ -1,0 +1,7 @@
+version: "2.4"
+services:
+  php:
+    image: dreg.docdoc.pro/library/php-cli:7.2-dev
+    volumes:
+      - .:/var/www/client
+    working_dir: /var/www/client
