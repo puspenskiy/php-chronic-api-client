@@ -3,7 +3,8 @@
 namespace DocDoc\RgsApiClient\ValueObject\Patient;
 
 use DocDoc\RgsApiClient\Enum\CategoryEnum;
-use DocDoc\RgsApiClient\Exception\ValidationException;
+use DocDoc\RgsApiClient\Enum\RobotTypeEnum;
+use DocDoc\RgsApiClient\ValueObject\AbstractValidateValueObject;
 use JsonSerializable;
 
 /**
@@ -13,7 +14,7 @@ use JsonSerializable;
  *
  * @see https://chronicmonitor.docs.apiary.io/#reference/patients/apiv1patient/post
  */
-class Patient implements JsonSerializable
+class Patient extends AbstractValidateValueObject implements JsonSerializable
 {
 	/**
 	 * @var string категория пациента
@@ -45,14 +46,8 @@ class Patient implements JsonSerializable
 	/** @var bool Статус активности пуш/робот систем для этого пациента */
 	private $monitoringEnabled = true;
 
-	/** @var string[]  Поля для валидации и представления */
-	private $fields;
-
 	/** @var string|null робот для совершения звонка */
 	private $robotType;
-
-	/** @var array <string,string> ошибки валидации */
-	private $errors;
 
 	/**
 	 * @return string
@@ -211,18 +206,6 @@ class Patient implements JsonSerializable
 	}
 
 	/**
-	 * @return array<string, mixed>
-	 * @throws ValidationException
-	 */
-	public function jsonSerialize(): array
-	{
-		if ($this->validate() === false) {
-			throw new ValidationException('Пациент содержит ошибки валидации');
-		}
-		return $this->getFields();
-	}
-
-	/**
 	 * Отключить пользователя в системе мониторинга
 	 */
 	public function deactivate(): void
@@ -251,26 +234,24 @@ class Patient implements JsonSerializable
 	 */
 	public function validate(): bool
 	{
-		$errors = [];
-		foreach ($this->getRequiredFields() as $name => $value) {
-			if ($value === null) {
-				$errors[$name] = 'Свойство ' . $name . ' не может быть пустым.';
-			}
+		parent::validate();
+		if (
+			CategoryEnum::getValue($this->categoryKey) === null
+		) {
+			$this->errors['categoryKey'] = 'Не допустимое значение категории пациента';
 		}
 
-		if (CategoryEnum::getValue($this->categoryKey) === null) {
-			$errors['categoryKey'] = 'Не допустимое значение категории пациента';
+		if (RobotTypeEnum::getValue($this->robotType) === null) {
+			$this->errors['robotType'] = 'Не допустимое значение ' . $this->robotType . ' робота для обзвона';
 		}
-		$this->errors = $errors;
+
 		return !(bool)$this->errors;
 	}
 
 	/**
-	 * Массив значений для валидации и Json представление объекта.
-	 *
-	 * @return array<string, string>
+	 * @inheritDoc
 	 */
-	private function getFields(): array
+	protected function getFields(): array
 	{
 		if ($this->fields !== null) {
 			return $this->fields;
@@ -291,7 +272,7 @@ class Patient implements JsonSerializable
 	 *
 	 * @return array<string, mixed>
 	 */
-	private function getRequiredFields(): array
+	protected function getRequiredFields(): array
 	{
 		$fields = $this->getFields();
 		unset($fields['patronymic'], $fields['robotType']);

@@ -2,6 +2,7 @@
 
 namespace DocDoc\RgsApiClient\test\ValueObject;
 
+use DocDoc\RgsApiClient\Enum\RobotTypeEnum;
 use DocDoc\RgsApiClient\Exception\ValidationException;
 use DocDoc\RgsApiClient\ValueObject\Patient\MetaData;
 use DocDoc\RgsApiClient\ValueObject\Patient\Patient;
@@ -76,6 +77,37 @@ class PatientTest extends TestCase
 
 		$result = json_encode($patient);
 		unset($result);
+	}
+
+	/**
+	 * Проверка допустимых значений типа робота для обзвона.
+	 *
+	 * @param string|null $robotType
+	 * @param             $expectValidateResult
+	 *
+	 * @dataProvider robotTypeValidationDataProvider
+	 */
+	public function testValidateRobotType(?string $robotType, bool $expectValidateResult): void
+	{
+		$patient = new Patient();
+		$patient->setRobotType($robotType);
+		$patient->validate(); //false т.к остальное не заполнено.
+		$errors = $patient->getErrors();
+		self::assertEquals(
+			$expectValidateResult,
+			(isset($errors['robotType']) === false), //Наличие ошибки = провал валидации.
+			'Валидация ' . $robotType . ' прошла не так как ожидалось'
+		);
+	}
+
+	public function robotTypeValidationDataProvider(): array
+	{
+		$result = [];
+		foreach (RobotTypeEnum::getAllValues() as $value) {
+			$result[] = [$value, true];
+		}
+		$result[] = ['не_существует_такой_робот', false];
+		return $result;
 	}
 
 	public function successJsonSerializeDataProvider(): array

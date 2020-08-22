@@ -85,21 +85,32 @@ class PatientsRgsClientTest extends TestCase
 	/**
 	 * @dataProvider getPatientDataProvider
 	 *
-	 * @param $jsonPatient
+	 * @param $extendedJson
 	 * @covers ::getPatient
 	 *
 	 * @throws BadRequestRgsException
 	 * @throws BaseRgsException
 	 */
-	public function testGetPatient($jsonPatient): void
+	public function testGetPatient(string $extendedJson): void
 	{
-		$jsonPatientObject = json_decode($jsonPatient, false);
+		$response = $this->client->getPatient(100);
+		$this->assertFieldsResponse($response, $extendedJson);
+	}
 
-		$patient = $this->client->getPatient(100);
-		$expectedObject = json_decode($patient->getBody()->getContents(), false);
+	/**
+	 * Набор утверждений сравнивающих поступивший и ожидаемый ответ.
+	 *
+	 * @param ResponseInterface $response
+	 * @param string            $extendedJson
+	 */
+	protected function assertFieldsResponse(ResponseInterface $response, string $extendedJson): void
+	{
+		$jsonPatientObject = json_decode($extendedJson, false);
+		$expectedObject = json_decode($response->getBody()->getContents(), false);
 		$fields = get_object_vars($jsonPatientObject);
 		//этих полей в ответе нет, все остальные должны совпадать
 		unset($fields['categoryKey']);
+		unset($fields['robotType']); //TODO  22.02.2020 метод и формат ответа еще не описан в документации.
 		foreach ($fields as $field => $value) {
 			self::assertEquals($expectedObject->$field, $value);
 		}
@@ -109,48 +120,30 @@ class PatientsRgsClientTest extends TestCase
 	 * @dataProvider getPatientDataProvider
 	 * @covers ::activate
 	 *
-	 * @param $jsonPatient
+	 * @param string $extendedJson
 	 *
 	 * @throws BadRequestRgsException
 	 * @throws BaseRgsException
 	 */
-	public function testActivate($jsonPatient): void
+	public function testActivate(string $extendedJson): void
 	{
-		$jsonPatientObject = json_decode($jsonPatient, false);
-
-		$patient = $this->client->activate(100);
-		$expectedObject = json_decode($patient->getBody()->getContents(), false);
-		$fields = get_object_vars($jsonPatientObject);
-		//этих полей в ответе нет, все остальные должны совпадать
-		unset($fields['categoryKey'], $fields['id']);
-		foreach ($fields as $field => $value) {
-			self::assertEquals($expectedObject->$field, $value);
-		}
+		$response = $this->client->activate(100);
+		$this->assertFieldsResponse($response, $extendedJson);
 	}
 
 	/**
 	 * @dataProvider getPatientDataProvider
 	 * @covers ::inactivate
 	 *
-	 * @param $jsonPatient
+	 * @param string $extendedJson
 	 *
 	 * @throws BadRequestRgsException
 	 * @throws BaseRgsException
 	 */
-	public function testInactivate($jsonPatient): void
+	public function testInactivate(string $extendedJson): void
 	{
-		$jsonPatientObject = json_decode($jsonPatient, false);
-
-		$patient = $this->client->activate(100);
-		//В Моке АПИ не корректный ответ  поправим в тесте.
-		$expectedObject = json_decode($patient->getBody()->getContents(), false);
-		$fields = get_object_vars($jsonPatientObject);
-		//этих полей в ответе нет, все остальные должны совпадать
-		unset($fields['categoryKey']);
-
-		foreach ($fields as $field => $value) {
-			self::assertEquals($expectedObject->$field, $value);
-		}
+		$response = $this->client->activate(100);
+		$this->assertFieldsResponse($response, $extendedJson);
 	}
 
 	public function successJsonSerializeDataProvider(): array
@@ -169,7 +162,8 @@ class PatientsRgsClientTest extends TestCase
                     },
                     "timezone": 120,
                     "active": true,
-                    "monitoringEnabled": true
+                    "monitoringEnabled": true,
+                    "robotType":"robovoice"
                 }'
 			],
 		];
@@ -201,7 +195,8 @@ class PatientsRgsClientTest extends TestCase
                         "maxValue": "120"
                       }
                     ],
-                    "timezone": "+02:00"
+                    "timezone": "+02:00",
+                    "robotType":"robovoice"
                   }'
 			]
 		];
@@ -218,6 +213,7 @@ class PatientsRgsClientTest extends TestCase
 		self::assertEquals($responsePatient['patronymic'], $requestPatient->getPatronymic());
 		self::assertEquals($responsePatient['active'], $requestPatient->isActive());
 		self::assertEquals($responsePatient['monitoringEnabled'], $requestPatient->isMonitoringEnabled());
+		//self::assertEquals($responsePatient['robotType'], $requestPatient->getRobotType()); //TODO на момент 22.02.2020 свойство не описано документации.
 	}
 
 	/**
@@ -235,7 +231,7 @@ class PatientsRgsClientTest extends TestCase
 		$patient->setPhone($jsonPatientObject->phone);
 		$patient->setPatronymic($jsonPatientObject->patronymic);
 		$patient->setExternalId($jsonPatientObject->externalId);
-
+		$patient->setRobotType($jsonPatientObject->robotType);
 		$patient->setMetadata(
 			new MetaData($jsonPatientObject->metadata->productId, $jsonPatientObject->metadata->contractId)
 		);
