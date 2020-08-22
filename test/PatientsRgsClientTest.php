@@ -5,6 +5,7 @@ namespace DocDoc\RgsApiClient\test;
 use DocDoc\RgsApiClient\Dto\RgsApiParamsInterface;
 use DocDoc\RgsApiClient\Exception\BadRequestRgsException;
 use DocDoc\RgsApiClient\Exception\BaseRgsException;
+use DocDoc\RgsApiClient\Exception\ValidationException;
 use DocDoc\RgsApiClient\PatientRgsClient;
 use DocDoc\RgsApiClient\ValueObject\Patient\MetaData;
 use DocDoc\RgsApiClient\ValueObject\Patient\Patient;
@@ -47,25 +48,14 @@ class PatientsRgsClientTest extends TestCase
 	 *
 	 * @dataProvider successJsonSerializeDataProvider
 	 *
-	 * @throws \DocDoc\RgsApiClient\Exception\ValidationException
 	 * @throws BadRequestRgsException
 	 * @throws BaseRgsException
+	 * @throws ValidationException
 	 */
 	public function testCreate(string $jsonPatient): void
 	{
-		$jsonPatientObject = json_decode($jsonPatient, false);
+		$patient = $this->getPatientObject($jsonPatient);
 
-		$patient = new Patient();
-		$patient->setCategoryKey($jsonPatientObject->categoryKey);
-		$patient->setFirstName($jsonPatientObject->firstName);
-		$patient->setPhone($jsonPatientObject->phone);
-		$patient->setPatronymic($jsonPatientObject->patronymic);
-		$patient->setExternalId($jsonPatientObject->externalId);
-
-		$patient->setMetadata(
-			new MetaData($jsonPatientObject->metadata->productId, $jsonPatientObject->metadata->contractId)
-		);
-		$patient->setTimezone(new TimeZone($jsonPatientObject->timezone));
 		$patientResponse = $this->client->createPatient($patient);
 		$this->checkPatient($patient, $patientResponse);
 	}
@@ -80,26 +70,13 @@ class PatientsRgsClientTest extends TestCase
 	 *
 	 * @dataProvider successJsonSerializeDataProvider
 	 *
-	 * @throws \DocDoc\RgsApiClient\Exception\ValidationException
 	 * @throws BadRequestRgsException
 	 * @throws BaseRgsException
+	 * @throws ValidationException
 	 */
 	public function testUpdate(string $jsonPatient): void
 	{
-		$jsonPatientObject = json_decode($jsonPatient, false);
-
-		$patient = new Patient();
-		$patient->setCategoryKey($jsonPatientObject->categoryKey);
-		$patient->setFirstName($jsonPatientObject->firstName);
-		$patient->setPhone($jsonPatientObject->phone);
-		$patient->setPatronymic($jsonPatientObject->patronymic);
-		$patient->setExternalId($jsonPatientObject->externalId);
-
-		$patient->setMetadata(
-			new MetaData($jsonPatientObject->metadata->productId, $jsonPatientObject->metadata->contractId)
-		);
-		$patient->setTimezone(new TimeZone($jsonPatientObject->timezone));
-
+		$patient = $this->getPatientObject($jsonPatient);
 		$patientResponse = $this->client->updatePatient($patient);
 
 		$this->checkPatient($patient, $patientResponse);
@@ -124,7 +101,7 @@ class PatientsRgsClientTest extends TestCase
 		//этих полей в ответе нет, все остальные должны совпадать
 		unset($fields['categoryKey']);
 		foreach ($fields as $field => $value) {
-			$this->assertEquals($expectedObject->$field, $value);
+			self::assertEquals($expectedObject->$field, $value);
 		}
 	}
 
@@ -147,7 +124,7 @@ class PatientsRgsClientTest extends TestCase
 		//этих полей в ответе нет, все остальные должны совпадать
 		unset($fields['categoryKey'], $fields['id']);
 		foreach ($fields as $field => $value) {
-			$this->assertEquals($expectedObject->$field, $value);
+			self::assertEquals($expectedObject->$field, $value);
 		}
 	}
 
@@ -172,13 +149,10 @@ class PatientsRgsClientTest extends TestCase
 		unset($fields['categoryKey']);
 
 		foreach ($fields as $field => $value) {
-			$this->assertEquals($expectedObject->$field, $value);
+			self::assertEquals($expectedObject->$field, $value);
 		}
 	}
 
-	/**
-	 * @inheritDoc
-	 */
 	public function successJsonSerializeDataProvider(): array
 	{
 		return [
@@ -201,9 +175,6 @@ class PatientsRgsClientTest extends TestCase
 		];
 	}
 
-	/**
-	 * @inheritDoc
-	 */
 	public function getPatientDataProvider(): array
 	{
 		return [
@@ -236,16 +207,39 @@ class PatientsRgsClientTest extends TestCase
 		];
 	}
 
-	private function checkPatient(Patient $requestPatient, ResponseInterface $responsePatient)
+	private function checkPatient(Patient $requestPatient, ResponseInterface $responsePatient): void
 	{
 		$responsePatient = json_decode($responsePatient->getBody()->getContents(), true);
 
-		$this->assertEquals($responsePatient['category']['key'], $requestPatient->getCategoryKey());
-		$this->assertEquals($responsePatient['firstName'], $requestPatient->getFirstName());
-		$this->assertEquals($responsePatient['phone'], $requestPatient->getPhone());
-		$this->assertEquals($responsePatient['externalId'], $requestPatient->getExternalId());
-		$this->assertEquals($responsePatient['patronymic'], $requestPatient->getPatronymic());
-		$this->assertEquals($responsePatient['active'], $requestPatient->isActive());
-		$this->assertEquals($responsePatient['monitoringEnabled'], $requestPatient->isMonitoringEnabled());
+		self::assertEquals($responsePatient['category']['key'], $requestPatient->getCategoryKey());
+		self::assertEquals($responsePatient['firstName'], $requestPatient->getFirstName());
+		self::assertEquals($responsePatient['phone'], $requestPatient->getPhone());
+		self::assertEquals($responsePatient['externalId'], $requestPatient->getExternalId());
+		self::assertEquals($responsePatient['patronymic'], $requestPatient->getPatronymic());
+		self::assertEquals($responsePatient['active'], $requestPatient->isActive());
+		self::assertEquals($responsePatient['monitoringEnabled'], $requestPatient->isMonitoringEnabled());
+	}
+
+	/**
+	 * @param string $jsonPatient
+	 *
+	 * @return Patient
+	 * @throws ValidationException
+	 */
+	private function getPatientObject(string $jsonPatient): Patient
+	{
+		$jsonPatientObject = json_decode($jsonPatient, false);
+		$patient = new Patient();
+		$patient->setCategoryKey($jsonPatientObject->categoryKey);
+		$patient->setFirstName($jsonPatientObject->firstName);
+		$patient->setPhone($jsonPatientObject->phone);
+		$patient->setPatronymic($jsonPatientObject->patronymic);
+		$patient->setExternalId($jsonPatientObject->externalId);
+
+		$patient->setMetadata(
+			new MetaData($jsonPatientObject->metadata->productId, $jsonPatientObject->metadata->contractId)
+		);
+		$patient->setTimezone(new TimeZone($jsonPatientObject->timezone));
+		return $patient;
 	}
 }
