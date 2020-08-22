@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 class ProductTest extends TestCase
 {
 	/**
-	 * Проверка ппавильности валидации
+	 * Проверка правильности валидации
 	 * @covers ::validate
 	 *
 	 * @param string $robotType
@@ -48,7 +48,7 @@ class ProductTest extends TestCase
 	{
 		$product = new Product(2017, $robotType);
 		if ($expectValidate === true) {
-			self::assertIsString(json_encode($product), 'после преобразования в продукта в json получена не строка');
+			self::assertIsString(json_encode($product), 'После преобразования в продукта в json результат не строка');
 		} else {
 			$this->expectException(ValidationException::class);
 			$result = json_encode($product);

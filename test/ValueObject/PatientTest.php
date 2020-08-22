@@ -100,6 +100,11 @@ class PatientTest extends TestCase
 		);
 	}
 
+	/**
+	 * Данные робота с указанем ожидаемого ответа валидаторов.
+	 *
+	 * @return array<array<string,bool>
+	 */
 	public function robotTypeValidationDataProvider(): array
 	{
 		$result = [];

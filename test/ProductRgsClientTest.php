@@ -13,7 +13,6 @@ use Psr\Log\LoggerInterface;
 
 /**
  * @coversDefaultClass \DocDoc\RgsApiClient\ProductRgsClient
- * @
  */
 class ProductRgsClientTest extends TestCase
 {
@@ -46,9 +45,7 @@ class ProductRgsClientTest extends TestCase
 	 */
 	public function testUpdate(string $expectedResponseData): void
 	{
-		self::markTestIncomplete(
-			'Этот тест ещё не реализован.'
-		);
+		self::markTestIncomplete('Этот тест ещё не реализован, т.к нет mock apiary object, на момент 22.02.2020 метод и формат ответа еще не описан в документации');
 		$expectedResponseDataObject = json_decode($expectedResponseData, true);
 		$product = new Product(2017, RobotTypeEnum::ROBOVOICE);
 		$response = $this->client->updateProduct($product);
