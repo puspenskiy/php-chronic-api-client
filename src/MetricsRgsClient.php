@@ -7,7 +7,7 @@ use DocDoc\RgsApiClient\Dto\MetricDTO;
 use DocDoc\RgsApiClient\Dto\MetricsDTO;
 use DocDoc\RgsApiClient\Dto\MetricsRangeDTO;
 use DocDoc\RgsApiClient\Enum\MetricTypeEnum;
-use DocDoc\RgsApiClient\Exception\BadRequestRgsException;
+use DocDoc\RgsApiClient\Exception\InternalErrorRgsException;
 use DocDoc\RgsApiClient\Exception\BaseRgsException;
 use Psr\Http\Message\ResponseInterface;
 
@@ -32,7 +32,7 @@ class MetricsRgsClient extends AbstractRgsClient
 	 * @param string                 $type - @see MetricType
 	 *
 	 * @return ResponseInterface
-	 * @throws BadRequestRgsException
+	 * @throws InternalErrorRgsException
 	 * @throws BaseRgsException
 	 */
 	public function getMetrics(
@@ -56,7 +56,7 @@ class MetricsRgsClient extends AbstractRgsClient
      * @param MetricDTO $metricDTO
      *
      * @return ResponseInterface
-     * @throws BadRequestRgsException
+     * @throws InternalErrorRgsException
      * @throws BaseRgsException
      */
 	public function createMetrics(MetricDTO $metricDTO): ResponseInterface
@@ -73,7 +73,7 @@ class MetricsRgsClient extends AbstractRgsClient
 	 * @param MetricsDTO $metricsDTO
 	 *
 	 * @return ResponseInterface
-	 * @throws BadRequestRgsException
+	 * @throws InternalErrorRgsException
 	 * @throws BaseRgsException
 	 * @deprecated  12.05.20 - Удалено со стороны РГС.
 	 */
@@ -90,7 +90,7 @@ class MetricsRgsClient extends AbstractRgsClient
 	 * @param int $externalId
 	 *
 	 * @return ResponseInterface
-	 * @throws BadRequestRgsException
+	 * @throws InternalErrorRgsException
 	 * @throws BaseRgsException
 	 */
 	public function getMetricsLast(int $externalId): ResponseInterface
@@ -107,7 +107,7 @@ class MetricsRgsClient extends AbstractRgsClient
 	 * @param MetricsRangeDTO $metricsRange
 	 *
 	 * @return ResponseInterface
-	 * @throws BadRequestRgsException
+	 * @throws InternalErrorRgsException
 	 * @throws BaseRgsException
 	 */
 	public function updateMetricsRanges(MetricsRangeDTO $metricsRange): ResponseInterface

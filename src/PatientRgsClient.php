@@ -3,7 +3,7 @@
 namespace DocDoc\RgsApiClient;
 
 use DocDoc\RgsApiClient\Dto\RgsApiParamsInterface;
-use DocDoc\RgsApiClient\Exception\BadRequestRgsException;
+use DocDoc\RgsApiClient\Exception\InternalErrorRgsException;
 use DocDoc\RgsApiClient\Exception\BaseRgsException;
 use DocDoc\RgsApiClient\ValueObject\Patient\Patient;
 use GuzzleHttp\ClientInterface;
@@ -35,7 +35,7 @@ class PatientRgsClient extends AbstractRgsClient
 	 * @param Patient $patient
 	 *
 	 * @return ResponseInterface
-	 * @throws BadRequestRgsException
+	 * @throws InternalErrorRgsException
 	 * @throws BaseRgsException
 	 */
 	public function createPatient(Patient $patient): ResponseInterface
@@ -50,7 +50,7 @@ class PatientRgsClient extends AbstractRgsClient
 	 * @param Patient $patient
 	 *
 	 * @return ResponseInterface
-	 * @throws BadRequestRgsException
+	 * @throws InternalErrorRgsException
 	 * @throws BaseRgsException
 	 */
 	public function updatePatient(Patient $patient): ResponseInterface
@@ -66,7 +66,7 @@ class PatientRgsClient extends AbstractRgsClient
 	 * @param int $externalId
 	 *
 	 * @return ResponseInterface
-	 * @throws BadRequestRgsException
+	 * @throws InternalErrorRgsException
 	 * @throws BaseRgsException
 	 */
 	public function getPatient(int $externalId): ResponseInterface
@@ -83,7 +83,7 @@ class PatientRgsClient extends AbstractRgsClient
 	 * @param int $externalId
 	 *
 	 * @return ResponseInterface
-	 * @throws BadRequestRgsException
+	 * @throws InternalErrorRgsException
 	 * @throws BaseRgsException
 	 */
 	public function activate(int $externalId): ResponseInterface
@@ -99,7 +99,7 @@ class PatientRgsClient extends AbstractRgsClient
 	 * @param int $externalId
 	 *
 	 * @return ResponseInterface
-	 * @throws BadRequestRgsException
+	 * @throws InternalErrorRgsException
 	 * @throws BaseRgsException
 	 */
 	public function inactivate(int $externalId): ResponseInterface

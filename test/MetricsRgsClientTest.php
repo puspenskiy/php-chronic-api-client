@@ -7,7 +7,7 @@ use DocDoc\RgsApiClient\Dto\MetricDTO;
 use DocDoc\RgsApiClient\Dto\MetricRangeDTO;
 use DocDoc\RgsApiClient\Dto\MetricsRangeDTO;
 use DocDoc\RgsApiClient\Dto\RgsApiParamsInterface;
-use DocDoc\RgsApiClient\Exception\BadRequestRgsException;
+use DocDoc\RgsApiClient\Exception\InternalErrorRgsException;
 use DocDoc\RgsApiClient\Exception\BaseRgsException;
 use DocDoc\RgsApiClient\MetricsRgsClient;
 use Exception;
@@ -52,7 +52,7 @@ class MetricsRgsClientTest extends TestCase
 	 *
 	 * @dataProvider dataProviderGet
 	 *
-	 * @throws BadRequestRgsException
+	 * @throws InternalErrorRgsException
 	 * @throws BaseRgsException
 	 */
 	public function testGet(string $json): void

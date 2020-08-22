@@ -39,7 +39,7 @@ class ProductRgsClientTest extends TestCase
 	 *
 	 * @param string $expectedResponseData
 	 *
-	 * @throws \DocDoc\RgsApiClient\Exception\BadRequestRgsException
+	 * @throws \DocDoc\RgsApiClient\Exception\InternalErrorRgsException
 	 * @throws \DocDoc\RgsApiClient\Exception\BaseRgsException
 	 * @dataProvider getProductDataProvider
 	 */

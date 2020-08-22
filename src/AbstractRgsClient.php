@@ -3,9 +3,9 @@
 namespace DocDoc\RgsApiClient;
 
 use DocDoc\RgsApiClient\Dto\RgsApiParamsInterface;
-use DocDoc\RgsApiClient\Exception\BadRequestRgsException;
-use DocDoc\RgsApiClient\Exception\BaseRgsException;
 use DocDoc\RgsApiClient\Exception\InternalErrorRgsException;
+use DocDoc\RgsApiClient\Exception\BaseRgsException;
+use DocDoc\RgsApiClient\Exception\BadRequestRgsException;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
@@ -51,9 +51,9 @@ abstract class AbstractRgsClient
 	 * @param RequestInterface $request
 	 *
 	 * @return ResponseInterface
-	 * @throws BadRequestRgsException
-	 * @throws BaseRgsException
 	 * @throws InternalErrorRgsException
+	 * @throws BaseRgsException
+	 * @throws BadRequestRgsException
 	 */
 	protected function send(RequestInterface $request): ResponseInterface
 	{
@@ -93,19 +93,19 @@ abstract class AbstractRgsClient
 	 * @param RequestInterface $request
 	 *
 	 * @return ResponseInterface
-	 * @throws BadRequestRgsException
 	 * @throws InternalErrorRgsException
+	 * @throws BadRequestRgsException
 	 */
 	public function sendRequest(RequestInterface $request): ResponseInterface
 	{
 		try {
 			$response = $this->client->send($request);
 			if ($response === null) {
-				throw new BadRequestRgsException('РГС сервис не прислал ответ.');
+				throw new InternalErrorRgsException('РГС сервис не прислал ответ.');
 			}
 			return $response;
 		} catch (ClientException $e) {
-			throw new InternalErrorRgsException($e->getResponse(), 'Ошибка 4xx при запросе к партнёру РГС');
+			throw new BadRequestRgsException($e->getResponse(), 'Ошибка 4xx при запросе к партнёру РГС');
 		} catch (ServerException $e) {
 			$request->getBody()->rewind();
 			$response = $e->getResponse();
@@ -120,7 +120,7 @@ abstract class AbstractRgsClient
 					'exception' => $e,
 				]
 			);
-			throw new BadRequestRgsException('Ошибка 5xx при запросе к партнёру РГС', 0, $e);
+			throw new InternalErrorRgsException('Ошибка 5xx при запросе к партнёру РГС', 0, $e);
 		} catch (GuzzleException $e) {
 			$this->logger->error(
 				'Критическая не известная ошибка при запросе к партнёру РГС',
@@ -132,7 +132,7 @@ abstract class AbstractRgsClient
 					'exception' => $e,
 				]
 			);
-			throw new BadRequestRgsException('Критическая ошибка при запросе к партнёру РГС', 0, $e);
+			throw new InternalErrorRgsException('Критическая ошибка при запросе к партнёру РГС', 0, $e);
 		}
 	}
 

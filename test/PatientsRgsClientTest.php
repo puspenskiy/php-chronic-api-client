@@ -3,7 +3,7 @@
 namespace DocDoc\RgsApiClient\test;
 
 use DocDoc\RgsApiClient\Dto\RgsApiParamsInterface;
-use DocDoc\RgsApiClient\Exception\BadRequestRgsException;
+use DocDoc\RgsApiClient\Exception\InternalErrorRgsException;
 use DocDoc\RgsApiClient\Exception\BaseRgsException;
 use DocDoc\RgsApiClient\Exception\ValidationException;
 use DocDoc\RgsApiClient\PatientRgsClient;
@@ -48,7 +48,7 @@ class PatientsRgsClientTest extends TestCase
 	 *
 	 * @dataProvider successJsonSerializeDataProvider
 	 *
-	 * @throws BadRequestRgsException
+	 * @throws InternalErrorRgsException
 	 * @throws BaseRgsException
 	 * @throws ValidationException
 	 */
@@ -70,7 +70,7 @@ class PatientsRgsClientTest extends TestCase
 	 *
 	 * @dataProvider successJsonSerializeDataProvider
 	 *
-	 * @throws BadRequestRgsException
+	 * @throws InternalErrorRgsException
 	 * @throws BaseRgsException
 	 * @throws ValidationException
 	 */
@@ -88,7 +88,7 @@ class PatientsRgsClientTest extends TestCase
 	 * @param $extendedJson
 	 * @covers ::getPatient
 	 *
-	 * @throws BadRequestRgsException
+	 * @throws InternalErrorRgsException
 	 * @throws BaseRgsException
 	 */
 	public function testGetPatient(string $extendedJson): void
@@ -122,7 +122,7 @@ class PatientsRgsClientTest extends TestCase
 	 *
 	 * @param string $extendedJson
 	 *
-	 * @throws BadRequestRgsException
+	 * @throws InternalErrorRgsException
 	 * @throws BaseRgsException
 	 */
 	public function testActivate(string $extendedJson): void
@@ -137,7 +137,7 @@ class PatientsRgsClientTest extends TestCase
 	 *
 	 * @param string $extendedJson
 	 *
-	 * @throws BadRequestRgsException
+	 * @throws InternalErrorRgsException
 	 * @throws BaseRgsException
 	 */
 	public function testInactivate(string $extendedJson): void

@@ -38,7 +38,7 @@ class CategoryRgsClientTest extends TestCase
 	 *
 	 * @param string $expectedResponseData
 	 *
-	 * @throws \DocDoc\RgsApiClient\Exception\BadRequestRgsException
+	 * @throws \DocDoc\RgsApiClient\Exception\InternalErrorRgsException
 	 * @throws \DocDoc\RgsApiClient\Exception\BaseRgsException
 	 */
 	public function testGetForm(string $expectedResponseData): void
