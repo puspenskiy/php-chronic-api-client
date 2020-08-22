@@ -23,7 +23,7 @@ class TimeZoneTest extends TestCase
 		$timeZoneObject = new TimeZone($timeZone);
 		$expected = json_encode($timeZoneObject);
 		$actual = $timeZone;
-		$this->assertEquals(
+		self::assertEquals(
 			$expected,
 			$actual,
 			'Временная зона не соответствует ожидаемой.'

@@ -2,6 +2,7 @@
 
 namespace DocDoc\RgsApiClient\test;
 
+use DateTimeImmutable;
 use DocDoc\RgsApiClient\Dto\MetricDTO;
 use DocDoc\RgsApiClient\Dto\MetricRangeDTO;
 use DocDoc\RgsApiClient\Dto\MetricsRangeDTO;
@@ -9,9 +10,11 @@ use DocDoc\RgsApiClient\Dto\RgsApiParamsInterface;
 use DocDoc\RgsApiClient\Exception\BadRequestRgsException;
 use DocDoc\RgsApiClient\Exception\BaseRgsException;
 use DocDoc\RgsApiClient\MetricsRgsClient;
+use Exception;
 use GuzzleHttp\Client;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
+use stdClass;
 
 /**
  * @coversDefaultClass \DocDoc\RgsApiClient\MetricsRgsClient
@@ -56,11 +59,11 @@ class MetricsRgsClientTest extends TestCase
 	{
 		$jsonMetricsObject = json_decode($json, true);
 		$response = $this->client->getMetrics(1);
-        $responseArray = json_decode($response->getBody()->getContents(), true);
-        $this->assertArrayHasKey('datetime', $responseArray[0]['values'][0]);
-        $this->assertStringMatchesFormat('%d-%d-%dT%d:%d:%d.%dZ', $responseArray[0]['values'][0]['datetime']);
-        unset($responseArray[0]['values'][0]['datetime'], $jsonMetricsObject[0]['values'][0]['datetime']);
-        $this->assertEquals($responseArray, $jsonMetricsObject);
+		$responseArray = json_decode($response->getBody()->getContents(), true);
+		self::assertArrayHasKey('datetime', $responseArray[0]['values'][0]);
+		self::assertStringMatchesFormat('%d-%d-%dT%d:%d:%d.%dZ', $responseArray[0]['values'][0]['datetime']);
+		unset($responseArray[0]['values'][0]['datetime'], $jsonMetricsObject[0]['values'][0]['datetime']);
+		self::assertEquals($responseArray, $jsonMetricsObject);
 	}
 
 	/**
@@ -76,14 +79,14 @@ class MetricsRgsClientTest extends TestCase
 	{
 		$metricsDto = $this->buildMetricDTO(json_decode($requestData, false));
 		$response = $this->client->createMetrics($metricsDto);
-        $expectedResponseDataArray = json_decode($expectedResponseData, true);
-        $responseArray = json_decode($response->getBody()->getContents(), true);
-        $this->assertArrayHasKey('datetime', $responseArray['items'][0]);
-        $this->assertStringMatchesFormat('%d-%d-%dT%d:%d:%d.%dZ', $responseArray['items'][0]['datetime']);
-        unset($responseArray['items'][0]['datetime'], $expectedResponseDataArray['items'][0]['datetime']);
-        $this->assertEquals(
+		$expectedResponseDataArray = json_decode($expectedResponseData, true);
+		$responseArray = json_decode($response->getBody()->getContents(), true);
+		self::assertArrayHasKey('datetime', $responseArray['items'][0]);
+		self::assertStringMatchesFormat('%d-%d-%dT%d:%d:%d.%dZ', $responseArray['items'][0]['datetime']);
+		unset($responseArray['items'][0]['datetime'], $expectedResponseDataArray['items'][0]['datetime']);
+		self::assertEquals(
 			$responseArray,
-            $expectedResponseDataArray
+			$expectedResponseDataArray
 		);
 	}
 
@@ -97,14 +100,14 @@ class MetricsRgsClientTest extends TestCase
 	public function testGetLast(string $expectedResponseData): void
 	{
 		$response = $this->client->getMetricsLast(1);
-        $expectedResponseDataArray = json_decode($expectedResponseData, true);
-        $responseArray = json_decode($response->getBody()->getContents(), true);
-        $this->assertArrayHasKey('datetime', $responseArray[0]);
-        $this->assertStringMatchesFormat('%d-%d-%dT%d:%d:%d.%dZ', $responseArray[0]['datetime']);
-        unset($responseArray[0]['datetime'], $expectedResponseDataArray[0]['datetime']);
-        $this->assertEquals(
+		$expectedResponseDataArray = json_decode($expectedResponseData, true);
+		$responseArray = json_decode($response->getBody()->getContents(), true);
+		self::assertArrayHasKey('datetime', $responseArray[0]);
+		self::assertStringMatchesFormat('%d-%d-%dT%d:%d:%d.%dZ', $responseArray[0]['datetime']);
+		unset($responseArray[0]['datetime'], $expectedResponseDataArray[0]['datetime']);
+		self::assertEquals(
 			$responseArray,
-            $expectedResponseDataArray
+			$expectedResponseDataArray
 		);
 	}
 
@@ -121,15 +124,12 @@ class MetricsRgsClientTest extends TestCase
 	{
 		$metricsRange = $this->buildMetricsRangeDTO(json_decode($requestData, false));
 		$response = $this->client->updateMetricsRanges($metricsRange);
-		$this->assertEquals(
+		self::assertEquals(
 			json_decode($response->getBody()->getContents(), true),
 			json_decode($expectedResponseData, true)
 		);
 	}
 
-	/**
-	 * @inheritDoc
-	 */
 	public function createDataProvider(): array
 	{
 		return [
@@ -163,9 +163,6 @@ class MetricsRgsClientTest extends TestCase
 		];
 	}
 
-	/**
-	 * @inheritDoc
-	 */
 	public function dataProviderGet(): array
 	{
 		return [
@@ -191,9 +188,6 @@ class MetricsRgsClientTest extends TestCase
 		];
 	}
 
-	/**
-	 * @inheritDoc
-	 */
 	public function dataProviderGetLast(): array
 	{
 		return [
@@ -213,9 +207,6 @@ class MetricsRgsClientTest extends TestCase
 		];
 	}
 
-	/**
-	 * @inheritDoc
-	 */
 	public function dataProviderUpdateMetricsRanges(): array
 	{
 		return [
@@ -256,15 +247,15 @@ class MetricsRgsClientTest extends TestCase
 	}
 
 	/**
-	 * @param \stdClass $requestData - данные для запроса создания.
+	 * @param stdClass $requestData - данные для запроса создания.
 	 *
 	 * @return MetricDTO
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	private function buildMetricDTO(\stdClass $requestData): MetricDTO
+	private function buildMetricDTO(stdClass $requestData): MetricDTO
 	{
 		$metric = new MetricDTO(1);
-		$metric->setDateTime(new \DateTimeImmutable($requestData->date . ' ' . $requestData->time));
+		$metric->setDateTime(new DateTimeImmutable($requestData->date . ' ' . $requestData->time));
 		$metric->setSource($requestData->source);
 		$metric->setValues(
 			[
@@ -276,12 +267,12 @@ class MetricsRgsClientTest extends TestCase
 	}
 
 	/**
-	 * @param \stdClass $requestData - данные для запроса создания.
+	 * @param stdClass $requestData - данные для запроса создания.
 	 *
 	 * @return MetricsRangeDTO
-	 * @throws \Exception
+	 * @throws Exception
 	 */
-	private function buildMetricsRangeDTO(\stdClass $requestData): MetricsRangeDTO
+	private function buildMetricsRangeDTO(stdClass $requestData): MetricsRangeDTO
 	{
 		$metricsRange = new MetricsRangeDTO(1);
 		$metricRange = new MetricRangeDTO();

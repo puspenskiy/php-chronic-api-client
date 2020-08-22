@@ -49,7 +49,7 @@ class PatientTest extends TestCase
 		$jsonPatientObject->timezone = $patient->getTimezone()->jsonSerialize();
 		unset($jsonPatientObject->metricsRanges);
 		$expected = json_encode($jsonPatientObject);
-		$this->assertEquals(
+		self::assertEquals(
 			$expected,
 			$actual,
 			'Представление объекта Пациента не соответствует ожидаемому'
@@ -73,12 +73,10 @@ class PatientTest extends TestCase
 		$patient = new Patient();
 		$patient->setCategoryKey($jsonPatientObject->categoryKey);
 
-		json_encode($patient);
+		$result = json_encode($patient);
+		unset($result);
 	}
 
-	/**
-	 * @inheritDoc
-	 */
 	public function successJsonSerializeDataProvider(): array
 	{
 		return [
@@ -152,9 +150,6 @@ class PatientTest extends TestCase
 		];
 	}
 
-	/**
-	 * @inheritDoc
-	 */
 	public function failJsonSerializeDataProvider(): array
 	{
 		return [

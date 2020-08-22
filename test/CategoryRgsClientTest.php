@@ -46,7 +46,7 @@ class CategoryRgsClientTest extends TestCase
 		$expectedResponseDataObject = json_decode($expectedResponseData, true);
 		$response = $this->client->getForm(CategoryEnum::COVID);
 
-		$this->assertEquals(json_decode($response->getBody()->getContents(), true), $expectedResponseDataObject);
+		self::assertEquals(json_decode($response->getBody()->getContents(), true), $expectedResponseDataObject);
 	}
 
 	/**
@@ -62,7 +62,7 @@ class CategoryRgsClientTest extends TestCase
 		$expectedResponseDataObject = json_decode($expectedResponseData, true);
 		$response = $this->client->getFormRanges(CategoryEnum::COVID);
 
-		$this->assertEquals(json_decode($response->getBody()->getContents(), true), $expectedResponseDataObject);
+		self::assertEquals(json_decode($response->getBody()->getContents(), true), $expectedResponseDataObject);
 	}
 
 	/**
