@@ -41,8 +41,7 @@ abstract class AbstractRgsClient
 		ClientInterface $client,
 		RgsApiParamsInterface $apiParams,
 		LoggerInterface $logger
-	)
-	{
+	) {
 		$this->client = $client;
 		$this->apiParams = $apiParams;
 		$this->logger = $logger;
@@ -54,6 +53,7 @@ abstract class AbstractRgsClient
 	 * @return ResponseInterface
 	 * @throws BadRequestRgsException
 	 * @throws BaseRgsException
+	 * @throws InternalErrorRgsException
 	 */
 	protected function send(RequestInterface $request): ResponseInterface
 	{

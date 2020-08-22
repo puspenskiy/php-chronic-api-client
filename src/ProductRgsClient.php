@@ -6,6 +6,7 @@ namespace DocDoc\RgsApiClient;
 
 use DocDoc\RgsApiClient\Exception\BadRequestRgsException;
 use DocDoc\RgsApiClient\Exception\BaseRgsException;
+use DocDoc\RgsApiClient\Exception\InternalErrorRgsException;
 use DocDoc\RgsApiClient\ValueObject\Product\Product;
 use Psr\Http\Message\ResponseInterface;
 
@@ -23,6 +24,7 @@ class ProductRgsClient extends AbstractRgsClient
 	 * @return ResponseInterface
 	 * @throws BadRequestRgsException
 	 * @throws BaseRgsException
+	 * @throws InternalErrorRgsException
 	 */
 	public function updateProduct(Product $product): ResponseInterface
 	{
