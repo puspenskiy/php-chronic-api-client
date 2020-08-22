@@ -32,6 +32,7 @@ class PatientTest extends TestCase
 		$patient->setPhone($jsonPatientObject->phone);
 		$patient->setPatronymic($jsonPatientObject->patronymic ?? null);
 		$patient->setExternalId($jsonPatientObject->externalId);
+		$patient->setRobotType($jsonPatientObject->robotType);
 		if ($jsonPatientObject->active === false) {
 			$patient->deactivate();
 		}
@@ -94,7 +95,8 @@ class PatientTest extends TestCase
                     "timezone": "+02:00",
                     "active": true,
                     "monitoringEnabled": true,
-                    "metricsRanges":[]
+                    "metricsRanges":[],
+                    "robotType":"robovoice"
                 }'
 			],
 			[
@@ -111,7 +113,8 @@ class PatientTest extends TestCase
                     "timezone": "+02:00",
                     "active": false,
                     "monitoringEnabled": false,
-                    "metricsRanges":[]
+                    "metricsRanges":[],
+                    "robotType":"robovoice"
                 }'
 			],
 			[
@@ -128,7 +131,8 @@ class PatientTest extends TestCase
                     "timezone": "+02:00",
                     "active": false,
                     "monitoringEnabled": false,
-                    "metricsRanges":[]
+                    "metricsRanges":[],
+                    "robotType":"robovoice"
                 }'
 			],
 			[
@@ -144,7 +148,8 @@ class PatientTest extends TestCase
                     "timezone": "+02:00",
                     "active": false,
                     "monitoringEnabled": false,
-                    "metricsRanges":[]
+                    "metricsRanges":[],
+                    "robotType":"robovoice"
                 }'
 			],
 		];
