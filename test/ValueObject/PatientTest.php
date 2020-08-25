@@ -2,6 +2,7 @@
 
 namespace DocDoc\RgsApiClient\test\ValueObject;
 
+use DocDoc\RgsApiClient\Enum\RobotTypeEnum;
 use DocDoc\RgsApiClient\Exception\ValidationException;
 use DocDoc\RgsApiClient\ValueObject\Patient\MetaData;
 use DocDoc\RgsApiClient\ValueObject\Patient\Patient;
@@ -32,6 +33,7 @@ class PatientTest extends TestCase
 		$patient->setPhone($jsonPatientObject->phone);
 		$patient->setPatronymic($jsonPatientObject->patronymic ?? null);
 		$patient->setExternalId($jsonPatientObject->externalId);
+		$patient->setRobotType($jsonPatientObject->robotType);
 		if ($jsonPatientObject->active === false) {
 			$patient->deactivate();
 		}
@@ -49,7 +51,7 @@ class PatientTest extends TestCase
 		$jsonPatientObject->timezone = $patient->getTimezone()->jsonSerialize();
 		unset($jsonPatientObject->metricsRanges);
 		$expected = json_encode($jsonPatientObject);
-		$this->assertEquals(
+		self::assertEquals(
 			$expected,
 			$actual,
 			'Представление объекта Пациента не соответствует ожидаемому'
@@ -73,12 +75,46 @@ class PatientTest extends TestCase
 		$patient = new Patient();
 		$patient->setCategoryKey($jsonPatientObject->categoryKey);
 
-		json_encode($patient);
+		$result = json_encode($patient);
+		unset($result);
 	}
 
 	/**
-	 * @inheritDoc
+	 * Проверка допустимых значений типа робота для обзвона.
+	 *
+	 * @param string|null $robotType
+	 * @param             $expectValidateResult
+	 *
+	 * @dataProvider robotTypeValidationDataProvider
 	 */
+	public function testValidateRobotType(?string $robotType, bool $expectValidateResult): void
+	{
+		$patient = new Patient();
+		$patient->setRobotType($robotType);
+		$patient->validate(); //false т.к остальное не заполнено.
+		$errors = $patient->getErrors();
+		self::assertEquals(
+			$expectValidateResult,
+			(isset($errors['robotType']) === false), //Наличие ошибки = провал валидации.
+			'Валидация ' . $robotType . ' прошла не так как ожидалось'
+		);
+	}
+
+	/**
+	 * Данные робота с указанем ожидаемого ответа валидаторов.
+	 *
+	 * @return array<array<string,bool>
+	 */
+	public function robotTypeValidationDataProvider(): array
+	{
+		$result = [];
+		foreach (RobotTypeEnum::getAllValues() as $value) {
+			$result[] = [$value, true];
+		}
+		$result[] = ['не_существует_такой_робот', false];
+		return $result;
+	}
+
 	public function successJsonSerializeDataProvider(): array
 	{
 		return [
@@ -96,7 +132,8 @@ class PatientTest extends TestCase
                     "timezone": "+02:00",
                     "active": true,
                     "monitoringEnabled": true,
-                    "metricsRanges":[]
+                    "metricsRanges":[],
+                    "robotType":"robovoice"
                 }'
 			],
 			[
@@ -113,7 +150,8 @@ class PatientTest extends TestCase
                     "timezone": "+02:00",
                     "active": false,
                     "monitoringEnabled": false,
-                    "metricsRanges":[]
+                    "metricsRanges":[],
+                    "robotType":"robovoice"
                 }'
 			],
 			[
@@ -130,7 +168,8 @@ class PatientTest extends TestCase
                     "timezone": "+02:00",
                     "active": false,
                     "monitoringEnabled": false,
-                    "metricsRanges":[]
+                    "metricsRanges":[],
+                    "robotType":"robovoice"
                 }'
 			],
 			[
@@ -146,15 +185,13 @@ class PatientTest extends TestCase
                     "timezone": "+02:00",
                     "active": false,
                     "monitoringEnabled": false,
-                    "metricsRanges":[]
+                    "metricsRanges":[],
+                    "robotType":"robovoice"
                 }'
 			],
 		];
 	}
 
-	/**
-	 * @inheritDoc
-	 */
 	public function failJsonSerializeDataProvider(): array
 	{
 		return [

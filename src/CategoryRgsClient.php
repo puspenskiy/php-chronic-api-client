@@ -3,7 +3,7 @@
 namespace DocDoc\RgsApiClient;
 
 use DocDoc\RgsApiClient\Enum\CategoryEnum;
-use DocDoc\RgsApiClient\Exception\BadRequestRgsException;
+use DocDoc\RgsApiClient\Exception\InternalErrorRgsException;
 use DocDoc\RgsApiClient\Exception\BaseRgsException;
 use Psr\Http\Message\ResponseInterface;
 
@@ -21,7 +21,7 @@ class CategoryRgsClient extends AbstractRgsClient
 	 * @param string $categoryKey - CategoryEnum
 	 *
 	 * @return ResponseInterface
-	 * @throws BadRequestRgsException
+	 * @throws InternalErrorRgsException
 	 * @throws BaseRgsException
 	 * @see CategoryEnum
 	 *
@@ -40,7 +40,7 @@ class CategoryRgsClient extends AbstractRgsClient
 	 * @param string $categoryKey - CategoryEnum
 	 *
 	 * @return ResponseInterface
-	 * @throws BadRequestRgsException
+	 * @throws InternalErrorRgsException
 	 * @throws BaseRgsException
 	 * @see CategoryEnum
 	 */

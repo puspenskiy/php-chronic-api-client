@@ -38,7 +38,7 @@ class CategoryRgsClientTest extends TestCase
 	 *
 	 * @param string $expectedResponseData
 	 *
-	 * @throws \DocDoc\RgsApiClient\Exception\BadRequestRgsException
+	 * @throws \DocDoc\RgsApiClient\Exception\InternalErrorRgsException
 	 * @throws \DocDoc\RgsApiClient\Exception\BaseRgsException
 	 */
 	public function testGetForm(string $expectedResponseData): void
@@ -46,7 +46,7 @@ class CategoryRgsClientTest extends TestCase
 		$expectedResponseDataObject = json_decode($expectedResponseData, true);
 		$response = $this->client->getForm(CategoryEnum::COVID);
 
-		$this->assertEquals(json_decode($response->getBody()->getContents(), true), $expectedResponseDataObject);
+		self::assertEquals(json_decode($response->getBody()->getContents(), true), $expectedResponseDataObject);
 	}
 
 	/**
@@ -62,7 +62,7 @@ class CategoryRgsClientTest extends TestCase
 		$expectedResponseDataObject = json_decode($expectedResponseData, true);
 		$response = $this->client->getFormRanges(CategoryEnum::COVID);
 
-		$this->assertEquals(json_decode($response->getBody()->getContents(), true), $expectedResponseDataObject);
+		self::assertEquals(json_decode($response->getBody()->getContents(), true), $expectedResponseDataObject);
 	}
 
 	/**

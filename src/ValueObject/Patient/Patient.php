@@ -3,7 +3,9 @@
 namespace DocDoc\RgsApiClient\ValueObject\Patient;
 
 use DocDoc\RgsApiClient\Enum\CategoryEnum;
-use DocDoc\RgsApiClient\Exception\ValidationException;
+use DocDoc\RgsApiClient\Enum\RobotTypeEnum;
+use DocDoc\RgsApiClient\ValueObject\AbstractValidateValueObject;
+use JsonSerializable;
 
 /**
  * Объект пациента РГС
@@ -12,18 +14,18 @@ use DocDoc\RgsApiClient\Exception\ValidationException;
  *
  * @see https://chronicmonitor.docs.apiary.io/#reference/patients/apiv1patient/post
  */
-class Patient implements \JsonSerializable
+class Patient extends AbstractValidateValueObject implements JsonSerializable
 {
 	/**
-	 * @var string - категория пациента
+	 * @var string категория пациента
 	 * @see CategoryEnum
 	 */
 	private $categoryKey;
 
-	/**@var string - имя */
+	/** @var string имя */
 	private $firstName;
 
-	/**@var string|null - отчество */
+	/** @var string | null отчество */
 	private $patronymic;
 
 	/** @var string телефон */
@@ -32,23 +34,20 @@ class Patient implements \JsonSerializable
 	/** @var int */
 	private $externalId;
 
-	/**@var MetaData */
+	/** @var MetaData */
 	private $metadata;
 
-	/** @var TimeZone - временная зона */
+	/** @var TimeZone временная зона */
 	private $timezone;
 
-	/** @var bool - Статус активности пациента в системе мониторинга */
+	/** @var bool Статус активности пациента в системе мониторинга */
 	private $active = true;
 
-	/** @var bool - Статус активности пуш/робот систем для этого пациента */
+	/** @var bool Статус активности пуш/робот систем для этого пациента */
 	private $monitoringEnabled = true;
 
-	/** @var array - Поля для валидации и представления */
-	private $fields;
-
-	/** @var array - ошибки валидации */
-	private $errors;
+	/** @var string|null робот для совершения звонка */
+	private $robotType;
 
 	/**
 	 * @return string
@@ -183,15 +182,19 @@ class Patient implements \JsonSerializable
 	}
 
 	/**
-	 * @inheritDoc
-	 * @throws ValidationException
+	 * @return string|null
 	 */
-	public function jsonSerialize()
+	public function getRobotType(): ?string
 	{
-		if ($this->validate() === false) {
-			throw new ValidationException('Пациент содержит ошибки валидации');
-		}
-		return $this->getFields();
+		return $this->robotType;
+	}
+
+	/**
+	 * @param string|null $robotType
+	 */
+	public function setRobotType(?string $robotType): void
+	{
+		$this->robotType = $robotType;
 	}
 
 	/**
@@ -231,26 +234,24 @@ class Patient implements \JsonSerializable
 	 */
 	public function validate(): bool
 	{
-		$errors = [];
-		foreach ($this->getRequiredFields() as $name => $value) {
-			if ($value === null) {
-				$errors[$name] = 'Свойство ' . $name . 'не может быть пустым.';
-			}
+		parent::validate();
+		if (
+			CategoryEnum::getValue($this->categoryKey) === null
+		) {
+			$this->errors['categoryKey'] = 'Не допустимое значение категории пациента';
 		}
 
-		if (CategoryEnum::getValue($this->categoryKey) === null) {
-			$errors['categoryKey'] = 'Не допустимое значение категории пациента';
+		if (RobotTypeEnum::getValue($this->robotType) === null) {
+			$this->errors['robotType'] = 'Не допустимое значение ' . $this->robotType . ' робота для обзвона';
 		}
-		$this->errors = $errors;
+
 		return !(bool)$this->errors;
 	}
 
 	/**
-	 * Массив значений для валидации и Json представление объекта.
-	 *
-	 * @return array
+	 * @inheritDoc
 	 */
-	private function getFields(): array
+	protected function getFields(): array
 	{
 		if ($this->fields !== null) {
 			return $this->fields;
@@ -259,30 +260,30 @@ class Patient implements \JsonSerializable
 		unset($fields['errors'], $fields['fields']);
 
 		if ($this->patronymic === null) {
-		    unset($fields['patronymic']);
-        }
+			unset($fields['patronymic']);
+		}
 
 		$this->fields = $fields;
 		return $this->fields;
 	}
 
-    /**
-     * Массив обязательных значений для валидации.
-     *
-     * @return array
-     */
-    private function getRequiredFields(): array
-    {
-        $fields = $this->getFields();
-        unset($fields['patronymic']);
+	/**
+	 * Массив обязательных значений для валидации.
+	 *
+	 * @return array<string, mixed>
+	 */
+	protected function getRequiredFields(): array
+	{
+		$fields = $this->getFields();
+		unset($fields['patronymic'], $fields['robotType']);
 
-        return $fields;
+		return $fields;
 	}
 
 	/**
 	 * Список ошибок валидации
 	 *
-	 * @return array
+	 * @return array <string, string>
 	 */
 	public function getErrors(): array
 	{
