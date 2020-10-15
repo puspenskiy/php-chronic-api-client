@@ -40,10 +40,19 @@ class Patient extends AbstractValidateValueObject implements JsonSerializable
 	/** @var TimeZone временная зона */
 	private $timezone;
 
-	/** @var bool Статус активности пациента в системе мониторинга */
+	/**
+	 * @var bool Статус активности пациента в системе мониторинга
+	 * @deprecated с выполнением задачи https://docdoc.atlassian.net/browse/RGS-172  поле объявлено устаревшим и не должно влиять на состояние пользователя
+	 *             Пациент создается всегда активным, а управление преходит в методы \DocDoc\RgsApiClient\PatientRgsClient::activate/deactivate
+	 */
 	private $active = true;
 
-	/** @var bool Статус активности пуш/робот систем для этого пациента */
+	/**
+	 * @var bool Статус активности пуш/робот систем для этого пациента
+	 *
+	 * @deprecated с выполнением задачи https://docdoc.atlassian.net/browse/RGS-172  поле объявлено устаревшим и не должно влиять на состояние пользователя
+	 *             Пациент создается всегда c активным САСД, а управление преходит в методы \DocDoc\RgsApiClient\PatientRgsClient::enableMonitoring/disableMonitoring
+	 */
 	private $monitoringEnabled = true;
 
 	/** @var string|null робот для совершения звонка */
@@ -199,6 +208,9 @@ class Patient extends AbstractValidateValueObject implements JsonSerializable
 
 	/**
 	 * Активировать пользователя в системе мониторинга
+	 *
+	 * @deprecated
+	 * @see  \DocDoc\RgsApiClient\PatientRgsClient::activate
 	 */
 	public function activate(): void
 	{
@@ -207,6 +219,9 @@ class Patient extends AbstractValidateValueObject implements JsonSerializable
 
 	/**
 	 * Отключить пользователя в системе мониторинга
+	 *
+	 * @deprecated
+	 * @see  \DocDoc\RgsApiClient\PatientRgsClient::deactivate
 	 */
 	public function deactivate(): void
 	{
@@ -215,6 +230,9 @@ class Patient extends AbstractValidateValueObject implements JsonSerializable
 
 	/**
 	 * Включить мониторинг в сервисе РГС
+	 *
+	 * @deprecated
+	 * @see  \DocDoc\RgsApiClient\PatientRgsClient::enableMonitoring()
 	 */
 	public function monitoringEnabled(): void
 	{
@@ -223,6 +241,9 @@ class Patient extends AbstractValidateValueObject implements JsonSerializable
 
 	/**
 	 * Отключить мониторинг в сервисе РГС
+	 *
+	 * @deprecated
+	 * @see  \DocDoc\RgsApiClient\PatientRgsClient::enableMonitoring()
 	 */
 	public function monitoringDisabled(): void
 	{

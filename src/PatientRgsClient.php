@@ -24,8 +24,7 @@ class PatientRgsClient extends AbstractRgsClient
 		ClientInterface $client,
 		RgsApiParamsInterface $apiParams,
 		LoggerInterface $logger
-	)
-	{
+	) {
 		parent::__construct($client, $apiParams, $logger);
 	}
 
@@ -94,18 +93,70 @@ class PatientRgsClient extends AbstractRgsClient
 	}
 
 	/**
-	 * Деактивация пациента в системе мониторинга РГС
-	 *
-	 * @param int $externalId
+	 * Список причин отключения
 	 *
 	 * @return ResponseInterface
 	 * @throws InternalErrorRgsException
 	 * @throws BaseRgsException
 	 */
-	public function inactivate(int $externalId): ResponseInterface
+	public function getInactivateReasons(): ResponseInterface
 	{
-		$url = '/api/v1/patient/' . $externalId . '/inactivate';
+		$request = $this->buildRequest('GET', '/api/v1/patient/inactivate-reasons', '');
+		return $this->send($request);
+	}
+
+	/**
+	 * Деактивация пациента в системе мониторинга РГС
+	 *
+	 * @param int $externalId
+	 *
+	 * @param int $reasonId - причина отключения @see \DocDoc\RgsApiClient\PatientRgsClient::getInactivateReasons
+	 *
+	 * @return ResponseInterface
+	 * @throws BaseRgsException
+	 * @throws Exception\BadRequestRgsException
+	 * @throws InternalErrorRgsException
+	 *
+	 *
+	 */
+	public function inactivate(int $externalId, int $reasonId): ResponseInterface
+	{
+		$url = '/api/v1/patient/' . $externalId . '/inactivate/' . $reasonId;
 		$request = $this->buildRequest('PATCH', $url, '');
+		return $this->send($request);
+	}
+
+	/**
+	 * Активация САСД (система автоматического сбора данных)
+	 *
+	 * @param int $externalId
+	 *
+	 * @return ResponseInterface
+	 * @throws BaseRgsException
+	 * @throws Exception\BadRequestRgsException
+	 * @throws InternalErrorRgsException
+	 */
+	public function enableMonitoring(int $externalId): ResponseInterface
+	{
+		$url = '/api/v1/patient/' . $externalId . '/monitoring';
+		$request = $this->buildRequest('POST', $url, '');
+		return $this->send($request);
+	}
+
+	/**
+	 * Деактиваци САСД (система автоматического сбора данных)
+	 *
+	 * @param int $externalId
+	 *
+	 * @return ResponseInterface
+	 * @throws BaseRgsException
+	 * @throws Exception\BadRequestRgsException
+	 * @throws InternalErrorRgsException
+	 */
+	public function disableMonitoring(int $externalId): ResponseInterface
+	{
+		$url = '/api/v1/patient/' . $externalId . '/monitoring';
+		$request = $this->buildRequest('DELETE', $url, '');
 		return $this->send($request);
 	}
 }
