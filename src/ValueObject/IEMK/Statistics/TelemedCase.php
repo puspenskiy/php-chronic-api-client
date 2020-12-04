@@ -170,10 +170,14 @@ class TelemedCase extends AbstractValidateValueObject implements JsonSerializabl
 
     /**
      * @param string $OpenDate
+     *
+     * @return TelemedCase
      */
-    public function setOpenDate(string $OpenDate): void
+    public function setOpenDate(string $OpenDate): TelemedCase
     {
         $this->OpenDate = $OpenDate;
+
+        return $this;
     }
 
     /**
@@ -186,10 +190,14 @@ class TelemedCase extends AbstractValidateValueObject implements JsonSerializabl
 
     /**
      * @param string $CloseDate
+     *
+     * @return TelemedCase
      */
-    public function setCloseDate(string $CloseDate): void
+    public function setCloseDate(string $CloseDate): TelemedCase
     {
         $this->CloseDate = $CloseDate;
+
+        return $this;
     }
 
     /**
@@ -202,10 +210,14 @@ class TelemedCase extends AbstractValidateValueObject implements JsonSerializabl
 
     /**
      * @param string $HistoryNumber
+     *
+     * @return TelemedCase
      */
-    public function setHistoryNumber(string $HistoryNumber): void
+    public function setHistoryNumber(string $HistoryNumber): TelemedCase
     {
         $this->HistoryNumber = $HistoryNumber;
+
+        return $this;
     }
 
     /**
@@ -218,10 +230,14 @@ class TelemedCase extends AbstractValidateValueObject implements JsonSerializabl
 
     /**
      * @param string $IdCaseMis
+     *
+     * @return TelemedCase
      */
-    public function setIdCaseMis(string $IdCaseMis): void
+    public function setIdCaseMis(string $IdCaseMis): TelemedCase
     {
         $this->IdCaseMis = $IdCaseMis;
+
+        return $this;
     }
 
     /**
@@ -234,10 +250,14 @@ class TelemedCase extends AbstractValidateValueObject implements JsonSerializabl
 
     /**
      * @param int $IdPaymentType
+     *
+     * @return TelemedCase
      */
-    public function setIdPaymentType(int $IdPaymentType): void
+    public function setIdPaymentType(int $IdPaymentType): TelemedCase
     {
         $this->IdPaymentType = $IdPaymentType;
+
+        return $this;
     }
 
     /**
@@ -250,10 +270,14 @@ class TelemedCase extends AbstractValidateValueObject implements JsonSerializabl
 
     /**
      * @param int $Confidentiality
+     *
+     * @return TelemedCase
      */
-    public function setConfidentiality(int $Confidentiality): void
+    public function setConfidentiality(int $Confidentiality): TelemedCase
     {
         $this->Confidentiality = $Confidentiality;
+
+        return $this;
     }
 
     /**
@@ -266,10 +290,14 @@ class TelemedCase extends AbstractValidateValueObject implements JsonSerializabl
 
     /**
      * @param int $DoctorConfidentiality
+     *
+     * @return TelemedCase
      */
-    public function setDoctorConfidentiality(int $DoctorConfidentiality): void
+    public function setDoctorConfidentiality(int $DoctorConfidentiality): TelemedCase
     {
         $this->DoctorConfidentiality = $DoctorConfidentiality;
+
+        return $this;
     }
 
     /**
@@ -282,10 +310,14 @@ class TelemedCase extends AbstractValidateValueObject implements JsonSerializabl
 
     /**
      * @param int $CuratorConfidentiality
+     *
+     * @return TelemedCase
      */
-    public function setCuratorConfidentiality(int $CuratorConfidentiality): void
+    public function setCuratorConfidentiality(int $CuratorConfidentiality): TelemedCase
     {
         $this->CuratorConfidentiality = $CuratorConfidentiality;
+
+        return $this;
     }
 
     /**
@@ -298,10 +330,14 @@ class TelemedCase extends AbstractValidateValueObject implements JsonSerializabl
 
     /**
      * @param int $IdCaseResult
+     *
+     * @return TelemedCase
      */
-    public function setIdCaseResult(int $IdCaseResult): void
+    public function setIdCaseResult(int $IdCaseResult): TelemedCase
     {
         $this->IdCaseResult = $IdCaseResult;
+
+        return $this;
     }
 
     /**
@@ -314,10 +350,14 @@ class TelemedCase extends AbstractValidateValueObject implements JsonSerializabl
 
     /**
      * @param string $Comment
+     *
+     * @return TelemedCase
      */
-    public function setComment(string $Comment): void
+    public function setComment(string $Comment): TelemedCase
     {
         $this->Comment = $Comment;
+
+        return $this;
     }
 
     /**
@@ -330,10 +370,14 @@ class TelemedCase extends AbstractValidateValueObject implements JsonSerializabl
 
     /**
      * @param MedicalStaff $DoctorInCharge
+     *
+     * @return TelemedCase
      */
-    public function setDoctorInCharge(MedicalStaff $DoctorInCharge): void
+    public function setDoctorInCharge(MedicalStaff $DoctorInCharge): TelemedCase
     {
         $this->DoctorInCharge = $DoctorInCharge;
+
+        return $this;
     }
 
     /**
@@ -346,10 +390,14 @@ class TelemedCase extends AbstractValidateValueObject implements JsonSerializabl
 
     /**
      * @param Participant $Authenticator
+     *
+     * @return TelemedCase
      */
-    public function setAuthenticator(Participant $Authenticator): void
+    public function setAuthenticator(Participant $Authenticator): TelemedCase
     {
         $this->Authenticator = $Authenticator;
+
+        return $this;
     }
 
     /**
@@ -362,10 +410,14 @@ class TelemedCase extends AbstractValidateValueObject implements JsonSerializabl
 
     /**
      * @param Participant $Author
+     *
+     * @return TelemedCase
      */
-    public function setAuthor(Participant $Author): void
+    public function setAuthor(Participant $Author): TelemedCase
     {
         $this->Author = $Author;
+
+        return $this;
     }
 
     /**
@@ -378,10 +430,14 @@ class TelemedCase extends AbstractValidateValueObject implements JsonSerializabl
 
     /**
      * @param string $IdPatientMis
+     *
+     * @return TelemedCase
      */
-    public function setIdPatientMis(string $IdPatientMis): void
+    public function setIdPatientMis(string $IdPatientMis): TelemedCase
     {
         $this->IdPatientMis = $IdPatientMis;
+
+        return $this;
     }
 
     /**
@@ -394,10 +450,14 @@ class TelemedCase extends AbstractValidateValueObject implements JsonSerializabl
 
     /**
      * @param string $TmcID
+     *
+     * @return TelemedCase
      */
-    public function setTmcID(string $TmcID): void
+    public function setTmcID(string $TmcID): TelemedCase
     {
         $this->TmcID = $TmcID;
+
+        return $this;
     }
 
     /**
@@ -410,10 +470,14 @@ class TelemedCase extends AbstractValidateValueObject implements JsonSerializabl
 
     /**
      * @param int $TmcForm
+     *
+     * @return TelemedCase
      */
-    public function setTmcForm(int $TmcForm): void
+    public function setTmcForm(int $TmcForm): TelemedCase
     {
         $this->TmcForm = $TmcForm;
+
+        return $this;
     }
 
     /**
@@ -426,10 +490,14 @@ class TelemedCase extends AbstractValidateValueObject implements JsonSerializabl
 
     /**
      * @param int $TmcGoal
+     *
+     * @return TelemedCase
      */
-    public function setTmcGoal(int $TmcGoal): void
+    public function setTmcGoal(int $TmcGoal): TelemedCase
     {
         $this->TmcGoal = $TmcGoal;
+
+        return $this;
     }
 
     /**
@@ -442,10 +510,14 @@ class TelemedCase extends AbstractValidateValueObject implements JsonSerializabl
 
     /**
      * @param Initiator $Initiator
+     *
+     * @return TelemedCase
      */
-    public function setInitiator(Initiator $Initiator): void
+    public function setInitiator(Initiator $Initiator): TelemedCase
     {
         $this->Initiator = $Initiator;
+
+        return $this;
     }
 
     /**
@@ -458,10 +530,14 @@ class TelemedCase extends AbstractValidateValueObject implements JsonSerializabl
 
     /**
      * @param array $MedRecords
+     *
+     * @return TelemedCase
      */
-    public function setMedRecords(array $MedRecords): void
+    public function setMedRecords(array $MedRecords): TelemedCase
     {
         $this->MedRecords = $MedRecords;
+
+        return $this;
     }
 
     /**
