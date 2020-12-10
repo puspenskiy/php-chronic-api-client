@@ -5,6 +5,7 @@ namespace DocDoc\RgsApiClient;
 use DocDoc\RgsApiClient\Exception\BaseRgsException;
 use DocDoc\RgsApiClient\Exception\InternalErrorRgsException;
 use DocDoc\RgsApiClient\ValueObject\IEMK\Statistics\TelemedCase;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Класс взаимодействия с РГС ИЭМК Модуль статистика
@@ -25,6 +26,7 @@ class IemkStatisticsRgsClient extends AbstractRgsClient
     {
         $url = '/api/v1/iemk/statistics/functions';
         $request = $this->buildRequest('GET', $url);
+
         return $this->send($request);
     }
 
@@ -40,6 +42,7 @@ class IemkStatisticsRgsClient extends AbstractRgsClient
     public function createTelemedCase(TelemedCase $telemedCase): ResponseInterface
     {
         $request = $this->buildRequest('POST', '/api/v1/iemk/statistics/telemed-case', json_encode($telemedCase));
+
         return $this->send($request);
     }
 
@@ -54,8 +57,9 @@ class IemkStatisticsRgsClient extends AbstractRgsClient
      */
     public function updateTelemedCase(TelemedCase $telemedCase): ResponseInterface
     {
-        $url = '/api/v1/patient/' . $telemedCase->getExternalId();
+        $url = '/api/v1/iemk/statistics/telemed-case';
         $request = $this->buildRequest('PATCH', $url, json_encode($telemedCase));
+
         return $this->send($request);
     }
 }

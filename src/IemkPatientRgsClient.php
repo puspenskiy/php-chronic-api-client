@@ -5,6 +5,7 @@ namespace DocDoc\RgsApiClient;
 use DocDoc\RgsApiClient\Exception\BaseRgsException;
 use DocDoc\RgsApiClient\Exception\InternalErrorRgsException;
 use DocDoc\RgsApiClient\ValueObject\IEMK\Patient\Patient;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Класс взаимодействия с РГС ИЭМК Модуль пациенты
@@ -25,6 +26,7 @@ class IemkPatientRgsClient extends AbstractRgsClient
     {
         $url = '/api/v1/iemk/patient/functions';
         $request = $this->buildRequest('GET', $url);
+
         return $this->send($request);
     }
 
@@ -59,6 +61,7 @@ class IemkPatientRgsClient extends AbstractRgsClient
     public function createPatient(Patient $patient): ResponseInterface
     {
         $request = $this->buildRequest('POST', '/api/v1/iemk/patient', json_encode($patient));
+
         return $this->send($request);
     }
 
@@ -73,8 +76,9 @@ class IemkPatientRgsClient extends AbstractRgsClient
      */
     public function updatePatient(Patient $patient): ResponseInterface
     {
-        $url = '/api/v1/patient/' . $patient->getExternalId();
+        $url = '/api/v1/iemk/patient/' . $patient->getIdPatientMIS();
         $request = $this->buildRequest('PATCH', $url, json_encode($patient));
+
         return $this->send($request);
     }
 }

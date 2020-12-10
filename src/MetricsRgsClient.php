@@ -3,6 +3,7 @@
 namespace DocDoc\RgsApiClient;
 
 use DateTimeImmutable;
+use DocDoc\RgsApiClient\Dto\DoctorCommentDto;
 use DocDoc\RgsApiClient\Dto\MetricDTO;
 use DocDoc\RgsApiClient\Dto\MetricsDTO;
 use DocDoc\RgsApiClient\Dto\MetricsRangeDTO;
@@ -117,4 +118,24 @@ class MetricsRgsClient extends AbstractRgsClient
 
 		return $this->send($request);
 	}
+
+    /**
+     * Добавление комментария доктора
+     *
+     * @param int $externalId
+     * @param int $metricValueId
+     * @param DoctorCommentDto $doctorCommentDto
+     *
+     * @return ResponseInterface
+     * @throws BaseRgsException
+     * @throws Exception\BadRequestRgsException
+     * @throws InternalErrorRgsException
+     */
+	public function addDoctorComment(int $externalId, int $metricValueId, DoctorCommentDto $doctorCommentDto): ResponseInterface
+    {
+        $url = '/api/v1/patient/' . $externalId . '/metric-value/'. $metricValueId.'/doctor-comment';
+        $request = $this->buildRequest('POST', $url, json_encode($doctorCommentDto));
+
+        return $this->send($request);
+    }
 }
