@@ -4,6 +4,7 @@ namespace DocDoc\RgsApiClient\ValueObject\IEMK\Statistics;
 
 use DocDoc\RgsApiClient\Enum\IEMK\MimeTypeEnum;
 use DocDoc\RgsApiClient\ValueObject\AbstractValidateValueObject;
+use DocDoc\RgsApiClient\ValueObject\IEMK\IemkValueObjectTrait;
 use JsonSerializable;
 
 /**
@@ -11,13 +12,15 @@ use JsonSerializable;
  */
 class DocumentAttachment extends AbstractValidateValueObject implements JsonSerializable
 {
+    use IemkValueObjectTrait;
+
     /**
      * Данные вложения (текст, pdf, html,xml) в формате base64binary
      * Рекомендуется для обмена данными использовать формат PDF/A-1
      *
      * @var string
      */
-    private $Data;
+    private $data;
 
     /**
      * Тип документа.
@@ -25,7 +28,7 @@ class DocumentAttachment extends AbstractValidateValueObject implements JsonSeri
      *
      * @var string
      */
-    private $MimeType;
+    private $mimeType;
 
     /**
      * Список ошибок валидации
@@ -42,15 +45,19 @@ class DocumentAttachment extends AbstractValidateValueObject implements JsonSeri
      */
     public function getData(): string
     {
-        return $this->Data;
+        return $this->data;
     }
 
     /**
-     * @param string $Data
+     * @param string $data
+     *
+     * @return DocumentAttachment
      */
-    public function setData(string $Data): void
+    public function setData(string $data): DocumentAttachment
     {
-        $this->Data = $Data;
+        $this->data = $data;
+
+        return $this;
     }
 
     /**
@@ -58,15 +65,19 @@ class DocumentAttachment extends AbstractValidateValueObject implements JsonSeri
      */
     public function getMimeType(): string
     {
-        return $this->MimeType;
+        return $this->mimeType;
     }
 
     /**
-     * @param string $MimeType
+     * @param string $mimeType
+     *
+     * @return DocumentAttachment
      */
-    public function setMimeType(string $MimeType): void
+    public function setMimeType(string $mimeType): DocumentAttachment
     {
-        $this->MimeType = $MimeType;
+        $this->mimeType = $mimeType;
+
+        return $this;
     }
 
     /**
@@ -75,8 +86,8 @@ class DocumentAttachment extends AbstractValidateValueObject implements JsonSeri
     public function validate(): bool
     {
         parent::validate();
-        if ($this->MimeType !== MimeTypeEnum::PDF) {
-            $this->errors['MimeType'] = 'Недопустимое значение Mimetype. Для текущей реализации доступен только "application/pdf"';
+        if ($this->mimeType !== MimeTypeEnum::PDF) {
+            $this->errors['mimeType'] = 'Недопустимое значение mimetype. Для текущей реализации доступен только "'. MimeTypeEnum::PDF . '"';
         }
 
         return !(bool)$this->errors;
@@ -96,7 +107,7 @@ class DocumentAttachment extends AbstractValidateValueObject implements JsonSeri
     protected function getFields(): array
     {
         if ($this->fields === null) {
-            $this->fields = ['Data', 'MimeType'];
+            $this->fields = ['data', 'mimeType'];
         }
 
         return $this->fields;

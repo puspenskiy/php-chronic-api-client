@@ -4,6 +4,7 @@ namespace DocDoc\RgsApiClient\ValueObject\IEMK\Patient;
 
 use DocDoc\RgsApiClient\Enum\IEMK\SexEnum;
 use DocDoc\RgsApiClient\ValueObject\AbstractValidateValueObject;
+use DocDoc\RgsApiClient\ValueObject\IEMK\IemkValueObjectTrait;
 use JsonSerializable;
 
 /**
@@ -15,40 +16,24 @@ use JsonSerializable;
  */
 class Patient extends AbstractValidateValueObject implements JsonSerializable
 {
-    /**
-     * Фамилия пациента
-     * @var string
-     */
-    private $FamilyName;
+    use IemkValueObjectTrait;
 
-    /**
-     * Имя пациента
-     * @var string
-     */
-    private $GivenName;
+    /** @var string Фамилия пациента */
+    private $familyName;
 
-    /**
-     * Отчество пациента
-     * @var string|null
-     */
-    private $MiddleName;
+    /** @var string Имя пациента */
+    private $givenName;
 
-    /**
-     * Пол
-     * @var int
-     */
-    private $Sex;
+    /** @var string|null Отчество пациента */
+    private $middleName;
 
-    /**
-     * Дата рождения
-     * @var string
-     */
+    /** @var int Пол */
+    private $sex;
+
+    /** @var string Дата рождения */
     private $BirthDate;
 
-    /**
-     * Внешний идентификатор пациента (External id)
-     * @var string
-     */
+    /** @var string  Внешний идентификатор пациента (External id) */
     private $IdPatientMIS;
 
     /**
@@ -56,15 +41,19 @@ class Patient extends AbstractValidateValueObject implements JsonSerializable
      */
     public function getFamilyName(): string
     {
-        return $this->FamilyName;
+        return $this->familyName;
     }
 
     /**
-     * @param string $FamilyName
+     * @param string $familyName
+     *
+     * @return Patient
      */
-    public function setFamilyName(string $FamilyName): void
+    public function setFamilyName(string $familyName): Patient
     {
-        $this->FamilyName = $FamilyName;
+        $this->familyName = $familyName;
+
+        return $this;
     }
 
     /**
@@ -72,15 +61,19 @@ class Patient extends AbstractValidateValueObject implements JsonSerializable
      */
     public function getGivenName(): string
     {
-        return $this->GivenName;
+        return $this->givenName;
     }
 
     /**
-     * @param string $GivenName
+     * @param string $givenName
+     *
+     * @return Patient
      */
-    public function setGivenName(string $GivenName): void
+    public function setGivenName(string $givenName): Patient
     {
-        $this->GivenName = $GivenName;
+        $this->givenName = $givenName;
+
+        return $this;
     }
 
     /**
@@ -88,15 +81,19 @@ class Patient extends AbstractValidateValueObject implements JsonSerializable
      */
     public function getMiddleName(): ?string
     {
-        return $this->MiddleName;
+        return $this->middleName;
     }
 
     /**
-     * @param string|null $MiddleName
+     * @param string|null $middleName
+     *
+     * @return Patient
      */
-    public function setMiddleName(?string $MiddleName): void
+    public function setMiddleName(?string $middleName): Patient
     {
-        $this->MiddleName = $MiddleName;
+        $this->middleName = $middleName;
+
+        return $this;
     }
 
     /**
@@ -104,15 +101,19 @@ class Patient extends AbstractValidateValueObject implements JsonSerializable
      */
     public function getSex(): int
     {
-        return $this->Sex;
+        return $this->sex;
     }
 
     /**
-     * @param int $Sex
+     * @param int $sex
+     *
+     * @return Patient
      */
-    public function setSex(int $Sex): void
+    public function setSex(int $sex): Patient
     {
-        $this->Sex = $Sex;
+        $this->sex = $sex;
+
+        return $this;
     }
 
     /**
@@ -125,10 +126,14 @@ class Patient extends AbstractValidateValueObject implements JsonSerializable
 
     /**
      * @param string $BirthDate
+     *
+     * @return Patient
      */
-    public function setBirthDate(string $BirthDate): void
+    public function setBirthDate(string $BirthDate): Patient
     {
         $this->BirthDate = $BirthDate;
+
+        return $this;
     }
 
     /**
@@ -141,10 +146,14 @@ class Patient extends AbstractValidateValueObject implements JsonSerializable
 
     /**
      * @param string $IdPatientMIS
+     *
+     * @return Patient
      */
-    public function setIdPatientMIS(string $IdPatientMIS): void
+    public function setIdPatientMIS(string $IdPatientMIS): Patient
     {
         $this->IdPatientMIS = $IdPatientMIS;
+
+        return $this;
     }
 
     /**
@@ -154,9 +163,9 @@ class Patient extends AbstractValidateValueObject implements JsonSerializable
     {
         parent::validate();
         if (
-            SexEnum::getValue($this->Sex) === null
+            SexEnum::getValue($this->sex) === null
         ) {
-            $this->errors['Sex'] = 'Недопустимое значение пола пациента';
+            $this->errors['sex'] = 'Недопустимое значение пола пациента';
         }
 
         return !(bool)$this->errors;
@@ -168,7 +177,7 @@ class Patient extends AbstractValidateValueObject implements JsonSerializable
     protected function getRequiredFields(): array
     {
         $fields = $this->getFields();
-        unset($fields['MiddleName']);
+        unset($fields['middleName']);
 
         return $fields;
     }
@@ -184,8 +193,8 @@ class Patient extends AbstractValidateValueObject implements JsonSerializable
         $fields = get_object_vars($this);
         unset($fields['errors'], $fields['fields']);
 
-        if ($this->MiddleName === null) {
-            unset($fields['MiddleName']);
+        if ($this->middleName === null) {
+            unset($fields['middleName']);
         }
 
         $this->fields = $fields;

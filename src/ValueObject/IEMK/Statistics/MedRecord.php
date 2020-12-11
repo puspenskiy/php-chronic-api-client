@@ -3,51 +3,62 @@
 namespace DocDoc\RgsApiClient\ValueObject\IEMK\Statistics;
 
 use DocDoc\RgsApiClient\ValueObject\AbstractValidateValueObject;
+use DocDoc\RgsApiClient\ValueObject\IEMK\IemkValueObjectTrait;
 use JsonSerializable;
 
 class MedRecord  extends AbstractValidateValueObject implements JsonSerializable
 {
-    /**
-     * Список ошибок валидации
-     *
-     * @return array <int, DocumentAttachment>
-     */
-    private $Attachments;
+    use IemkValueObjectTrait;
+
 
     /**
+     * Массив неструктурированного (бинарного) содержания документа
+     * @var DocumentAttachment[]
+     */
+    private $attachments;
+
+    /**
+     * Сведения о лице, создавшем документ
      * @var MedicalStaff
      */
-    private $Author;
+    private $author;
 
     /**
+     * Дата создания документа
      * @var string
      */
-    private $CreationDate;
+    private $creationDate;
 
     /**
+     * Заголовок документа (краткое описание)
      * @var string
      */
-    private $Header;
+    private $header;
 
     /**
+     * Идентификатор документа в системе-источнике (МИС)
      * @var string
      */
-    private $IdDocumentMis;
+    private $idDocumentMis;
 
     /**
      * @return mixed
      */
     public function getAttachments()
     {
-        return $this->Attachments;
+        return $this->attachments;
     }
 
     /**
-     * @param mixed $Attachments
+     * @param mixed $attachments
+     *
+     * @return MedRecord
      */
-    public function setAttachments($Attachments): void
+    public function setAttachments($attachments): MedRecord
     {
-        $this->Attachments = $Attachments;
+        $this->attachments = $attachments;
+
+        return $this;
     }
 
     /**
@@ -55,15 +66,19 @@ class MedRecord  extends AbstractValidateValueObject implements JsonSerializable
      */
     public function getAuthor(): MedicalStaff
     {
-        return $this->Author;
+        return $this->author;
     }
 
     /**
-     * @param MedicalStaff $Author
+     * @param MedicalStaff $author
+     *
+     * @return MedRecord
      */
-    public function setAuthor(MedicalStaff $Author): void
+    public function setAuthor(MedicalStaff $author): MedRecord
     {
-        $this->Author = $Author;
+        $this->author = $author;
+
+        return $this;
     }
 
     /**
@@ -71,15 +86,19 @@ class MedRecord  extends AbstractValidateValueObject implements JsonSerializable
      */
     public function getCreationDate(): string
     {
-        return $this->CreationDate;
+        return $this->creationDate;
     }
 
     /**
-     * @param string $CreationDate
+     * @param string $creationDate
+     *
+     * @return MedRecord
      */
-    public function setCreationDate(string $CreationDate): void
+    public function setCreationDate(string $creationDate): MedRecord
     {
-        $this->CreationDate = $CreationDate;
+        $this->creationDate = $creationDate;
+
+        return $this;
     }
 
     /**
@@ -87,15 +106,19 @@ class MedRecord  extends AbstractValidateValueObject implements JsonSerializable
      */
     public function getHeader(): string
     {
-        return $this->Header;
+        return $this->header;
     }
 
     /**
-     * @param string $Header
+     * @param string $header
+     *
+     * @return MedRecord
      */
-    public function setHeader(string $Header): void
+    public function setHeader(string $header): MedRecord
     {
-        $this->Header = $Header;
+        $this->header = $header;
+
+        return $this;
     }
 
     /**
@@ -103,15 +126,19 @@ class MedRecord  extends AbstractValidateValueObject implements JsonSerializable
      */
     public function getIdDocumentMis(): string
     {
-        return $this->IdDocumentMis;
+        return $this->idDocumentMis;
     }
 
     /**
-     * @param string $IdDocumentMis
+     * @param string $idDocumentMis
+     *
+     * @return MedRecord
      */
-    public function setIdDocumentMis(string $IdDocumentMis): void
+    public function setIdDocumentMis(string $idDocumentMis): MedRecord
     {
-        $this->IdDocumentMis = $IdDocumentMis;
+        $this->idDocumentMis = $idDocumentMis;
+
+        return $this;
     }
 
     /**
@@ -130,10 +157,11 @@ class MedRecord  extends AbstractValidateValueObject implements JsonSerializable
         if ($this->fields !== null) {
             return $this->fields;
         }
+
         $fields = get_object_vars($this);
         unset($fields['errors'], $fields['fields']);
-
         $this->fields = $fields;
+
         return $this->fields;
     }
 }

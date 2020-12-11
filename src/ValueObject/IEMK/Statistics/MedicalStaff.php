@@ -3,6 +3,7 @@
 namespace DocDoc\RgsApiClient\ValueObject\IEMK\Statistics;
 
 use DocDoc\RgsApiClient\ValueObject\AbstractValidateValueObject;
+use DocDoc\RgsApiClient\ValueObject\IEMK\IemkValueObjectTrait;
 use JsonSerializable;
 
 /**
@@ -13,39 +14,45 @@ use JsonSerializable;
  */
 class MedicalStaff extends AbstractValidateValueObject implements JsonSerializable
 {
+    use IemkValueObjectTrait;
+
     /**
      * Идентификатор специальности медицинского работника.
      * (Справочник OID:1.2.643.5.1.13.2.1.1.181)
      * @var int
      */
-    private $IdSpeciality;
+    private $idSpeciality;
 
     /**
      * Идентификатор должности медицинского работника.
      * (Справочник OID:1.2.643.5.1.13.2.1.1.607)
      * @var int
      */
-    private $IdPosition;
+    private $idPosition;
 
     /**
      * @var Person
      */
-    private $Person;
+    private $person;
 
     /**
      * @return int
      */
     public function getIdSpeciality(): int
     {
-        return $this->IdSpeciality;
+        return $this->idSpeciality;
     }
 
     /**
-     * @param int $IdSpeciality
+     * @param int $idSpeciality
+     *
+     * @return MedicalStaff
      */
-    public function setIdSpeciality(int $IdSpeciality): void
+    public function setIdSpeciality(int $idSpeciality): MedicalStaff
     {
-        $this->IdSpeciality = $IdSpeciality;
+        $this->idSpeciality = $idSpeciality;
+
+        return $this;
     }
 
     /**
@@ -53,15 +60,19 @@ class MedicalStaff extends AbstractValidateValueObject implements JsonSerializab
      */
     public function getIdPosition(): int
     {
-        return $this->IdPosition;
+        return $this->idPosition;
     }
 
     /**
-     * @param int $IdPosition
+     * @param int $idPosition
+     *
+     * @return MedicalStaff
      */
-    public function setIdPosition(int $IdPosition): void
+    public function setIdPosition(int $idPosition): MedicalStaff
     {
-        $this->IdPosition = $IdPosition;
+        $this->idPosition = $idPosition;
+
+        return $this;
     }
 
     /**
@@ -69,15 +80,19 @@ class MedicalStaff extends AbstractValidateValueObject implements JsonSerializab
      */
     public function getPerson(): Person
     {
-        return $this->Person;
+        return $this->person;
     }
 
     /**
-     * @param Person $Person
+     * @param Person $person
+     *
+     * @return MedicalStaff
      */
-    public function setPerson(Person $Person): void
+    public function setPerson(Person $person): MedicalStaff
     {
-        $this->Person = $Person;
+        $this->person = $person;
+
+        return $this;
     }
 
     /**
@@ -94,7 +109,7 @@ class MedicalStaff extends AbstractValidateValueObject implements JsonSerializab
     protected function getFields(): array
     {
         if ($this->fields === null) {
-            $this->fields = ['IdSpeciality', 'IdPosition', 'Person'];
+            $this->fields = ['idSpeciality', 'idPosition', 'person'];
         }
 
         return $this->fields;

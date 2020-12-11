@@ -8,33 +8,36 @@ use DocDoc\RgsApiClient\Enum\IEMK\PaymentTypeEnum;
 use DocDoc\RgsApiClient\Enum\IEMK\TelemedCaseFormEnum;
 use DocDoc\RgsApiClient\Enum\IEMK\TelemedCaseGoalEnum;
 use DocDoc\RgsApiClient\ValueObject\AbstractValidateValueObject;
+use DocDoc\RgsApiClient\ValueObject\IEMK\IemkValueObjectTrait;
 use JsonSerializable;
 
 class TelemedCase extends AbstractValidateValueObject implements JsonSerializable
 {
+    use IemkValueObjectTrait;
+
     /**
      * Дата открытия случая обслуживания (начала телемед-консультации)
      * @var string
      */
-    private $OpenDate;
+    private $openDate;
 
     /**
      * Дата закрытия случая обслуживания (окончание телемед-консультации)
      * @var string
      */
-    private $CloseDate;
+    private $closeDate;
 
     /**
      * Номер истории болезни/Амбулаторного талона
      * @var string
      */
-    private $HistoryNumber;
+    private $historyNumber;
 
     /**
      * Идентификатор телемед-консультации
      * @var string
      */
-    private $IdCaseMis;
+    private $idCaseMis;
 
     /**
      * Идентификатор источника финансирования (Cправочник OID: 1.2.643.2.69.1.1.1.32)
@@ -74,16 +77,19 @@ class TelemedCase extends AbstractValidateValueObject implements JsonSerializabl
     private $Comment;
 
     /**
+     * Информация о лечащем враче
      * @var MedicalStaff
      */
     private $DoctorInCharge;
 
     /**
+     * Лицо, подписывающее или визирующее формируемый набор медицинской информации
      * @var Participant
      */
     private $Authenticator;
 
     /**
+     * Лицо, являющееся автором передаваемого набора медицинской информации (как правило, лечащий врач)
      * @var Participant
      */
     private $Author;
@@ -114,14 +120,14 @@ class TelemedCase extends AbstractValidateValueObject implements JsonSerializabl
     private $TmcGoal;
 
     /**
+     * Инициатор телемедицинской консультации
      * @var Initiator
      */
     private $Initiator;
 
     /**
-     * Список ошибок валидации
-     *
-     * @var array <int, MedRecord>
+     * Массив информации и содержания заключений по результатам консультации
+     * @var MedRecord[]
      */
     private $MedRecords;
 
@@ -165,17 +171,17 @@ class TelemedCase extends AbstractValidateValueObject implements JsonSerializabl
      */
     public function getOpenDate(): string
     {
-        return $this->OpenDate;
+        return $this->openDate;
     }
 
     /**
-     * @param string $OpenDate
+     * @param string $openDate
      *
      * @return TelemedCase
      */
-    public function setOpenDate(string $OpenDate): TelemedCase
+    public function setOpenDate(string $openDate): TelemedCase
     {
-        $this->OpenDate = $OpenDate;
+        $this->openDate = $openDate;
 
         return $this;
     }
@@ -185,17 +191,17 @@ class TelemedCase extends AbstractValidateValueObject implements JsonSerializabl
      */
     public function getCloseDate(): string
     {
-        return $this->CloseDate;
+        return $this->closeDate;
     }
 
     /**
-     * @param string $CloseDate
+     * @param string $closeDate
      *
      * @return TelemedCase
      */
-    public function setCloseDate(string $CloseDate): TelemedCase
+    public function setCloseDate(string $closeDate): TelemedCase
     {
-        $this->CloseDate = $CloseDate;
+        $this->closeDate = $closeDate;
 
         return $this;
     }
@@ -205,17 +211,17 @@ class TelemedCase extends AbstractValidateValueObject implements JsonSerializabl
      */
     public function getHistoryNumber(): string
     {
-        return $this->HistoryNumber;
+        return $this->historyNumber;
     }
 
     /**
-     * @param string $HistoryNumber
+     * @param string $historyNumber
      *
      * @return TelemedCase
      */
-    public function setHistoryNumber(string $HistoryNumber): TelemedCase
+    public function setHistoryNumber(string $historyNumber): TelemedCase
     {
-        $this->HistoryNumber = $HistoryNumber;
+        $this->historyNumber = $historyNumber;
 
         return $this;
     }
@@ -225,17 +231,17 @@ class TelemedCase extends AbstractValidateValueObject implements JsonSerializabl
      */
     public function getIdCaseMis(): string
     {
-        return $this->IdCaseMis;
+        return $this->idCaseMis;
     }
 
     /**
-     * @param string $IdCaseMis
+     * @param string $idCaseMis
      *
      * @return TelemedCase
      */
-    public function setIdCaseMis(string $IdCaseMis): TelemedCase
+    public function setIdCaseMis(string $idCaseMis): TelemedCase
     {
-        $this->IdCaseMis = $IdCaseMis;
+        $this->idCaseMis = $idCaseMis;
 
         return $this;
     }

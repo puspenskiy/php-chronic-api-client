@@ -3,6 +3,7 @@
 namespace DocDoc\RgsApiClient\ValueObject\IEMK\Statistics;
 
 use DocDoc\RgsApiClient\ValueObject\AbstractValidateValueObject;
+use DocDoc\RgsApiClient\ValueObject\IEMK\IemkValueObjectTrait;
 use JsonSerializable;
 
 /**
@@ -13,30 +14,38 @@ use JsonSerializable;
  */
 class Person extends AbstractValidateValueObject implements JsonSerializable
 {
-    /**
-     * @var HumanName
-     */
-    private $HumanName;
+    use IemkValueObjectTrait;
 
     /**
+     * Имя персоны
+     * @var HumanName
+     */
+    private $humanName;
+
+    /**
+     * Идентификатор персоны в системе-источнике данных
      * @var int
      */
-    private $IdPersonMis;
+    private $idPersonMis;
 
     /**
      * @return HumanName
      */
     public function getHumanName(): HumanName
     {
-        return $this->HumanName;
+        return $this->humanName;
     }
 
     /**
-     * @param HumanName $HumanName
+     * @param HumanName $humanName
+     *
+     * @return Person
      */
-    public function setHumanName(HumanName $HumanName): void
+    public function setHumanName(HumanName $humanName): Person
     {
-        $this->HumanName = $HumanName;
+        $this->humanName = $humanName;
+
+        return $this;
     }
 
     /**
@@ -44,15 +53,19 @@ class Person extends AbstractValidateValueObject implements JsonSerializable
      */
     public function getIdPersonMis(): int
     {
-        return $this->IdPersonMis;
+        return $this->idPersonMis;
     }
 
     /**
-     * @param int $IdPersonMis
+     * @param int $idPersonMis
+     *
+     * @return Person
      */
-    public function setIdPersonMis(int $IdPersonMis): void
+    public function setIdPersonMis(int $idPersonMis): Person
     {
-        $this->IdPersonMis = $IdPersonMis;
+        $this->idPersonMis = $idPersonMis;
+
+        return $this;
     }
 
     /**
@@ -69,7 +82,7 @@ class Person extends AbstractValidateValueObject implements JsonSerializable
     protected function getFields(): array
     {
         if ($this->fields === null) {
-            $this->fields = ['HumanName', 'IdPersonMis'];
+            $this->fields = ['humanName', 'idPersonMis'];
         }
 
         return $this->fields;

@@ -4,6 +4,7 @@ namespace DocDoc\RgsApiClient\ValueObject\IEMK\Statistics;
 
 use DocDoc\RgsApiClient\Enum\IEMK\RoleEnum;
 use DocDoc\RgsApiClient\ValueObject\AbstractValidateValueObject;
+use DocDoc\RgsApiClient\ValueObject\IEMK\IemkValueObjectTrait;
 use JsonSerializable;
 
 /**
@@ -14,30 +15,38 @@ use JsonSerializable;
  */
 class Participant extends AbstractValidateValueObject implements JsonSerializable
 {
-    /**
-     * @var int
-     */
-    private $IdRole;
+    use IemkValueObjectTrait;
 
     /**
+     * Роль работника в оказании помощи (Справочник OID: 1.2.643.5.1.13.2.7.1.30)
+     * @var int
+     */
+    private $idRole;
+
+    /**
+     * Данные медицинского работника
      * @var MedicalStaff
      */
-    private $Doctor;
+    private $doctor;
 
     /**
      * @return int
      */
     public function getIdRole(): int
     {
-        return $this->IdRole;
+        return $this->idRole;
     }
 
     /**
-     * @param int $IdRole
+     * @param int $idRole
+     *
+     * @return Participant
      */
-    public function setIdRole(int $IdRole): void
+    public function setIdRole(int $idRole): Participant
     {
-        $this->IdRole = $IdRole;
+        $this->idRole = $idRole;
+
+        return $this;
     }
 
     /**
@@ -45,15 +54,19 @@ class Participant extends AbstractValidateValueObject implements JsonSerializabl
      */
     public function getDoctor(): MedicalStaff
     {
-        return $this->Doctor;
+        return $this->doctor;
     }
 
     /**
-     * @param MedicalStaff $Doctor
+     * @param MedicalStaff $doctor
+     *
+     * @return Participant
      */
-    public function setDoctor(MedicalStaff $Doctor): void
+    public function setDoctor(MedicalStaff $doctor): Participant
     {
-        $this->Doctor = $Doctor;
+        $this->doctor = $doctor;
+
+        return $this;
     }
 
     /**
@@ -70,8 +83,8 @@ class Participant extends AbstractValidateValueObject implements JsonSerializabl
     public function validate(): bool
     {
         parent::validate();
-        if (RoleEnum::getValue($this->IdRole) === null) {
-            $this->errors['IdRole'] = 'Недопустимое значение роли медицинского работника';
+        if (RoleEnum::getValue($this->idRole) === null) {
+            $this->errors['idRole'] = 'Недопустимое значение роли медицинского работника';
         }
 
         return !(bool)$this->errors;
@@ -83,7 +96,7 @@ class Participant extends AbstractValidateValueObject implements JsonSerializabl
     protected function getFields(): array
     {
         if ($this->fields === null) {
-            $this->fields = ['IdRole', 'Doctor'];
+            $this->fields = ['idRole', 'doctor'];
         }
 
         return $this->fields;

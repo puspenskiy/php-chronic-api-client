@@ -4,42 +4,51 @@ namespace DocDoc\RgsApiClient\ValueObject\IEMK\Statistics;
 
 use DocDoc\RgsApiClient\Enum\IEMK\InitiatorTypeEnum;
 use DocDoc\RgsApiClient\ValueObject\AbstractValidateValueObject;
+use DocDoc\RgsApiClient\ValueObject\IEMK\IemkValueObjectTrait;
 use JsonSerializable;
 
 /**
  * Объект Инициатор телемед-консультации ЕГИСЗ ИЭМК
  * Валидируется, имеет Json представление согласно спецификации, имеет методы управления состоянием
  * Применяется для создания случая обслуживания в сервисе ЕГИСЗ ИЭМК
- *
  */
-class Initiator  extends AbstractValidateValueObject implements JsonSerializable
+class Initiator extends AbstractValidateValueObject implements JsonSerializable
 {
+    use IemkValueObjectTrait;
+
     /**
      * Идентификатор типа инициатора проведения телемедицинской консультации
      * Справочник OID: 1.2.643.2.69.1.1.1.129
      * @var int
+     * @see InitiatorTypeEnum
      */
-    private $InitiatorType;
+    private $initiatorType;
 
     /**
+     * Врач - инициатор консультации
+     * Обязателен, если тип инициатора соответствует значению "Лечащий врач"
      * @var MedicalStaff
      */
-    private $Doctor;
+    private $doctor;
 
     /**
      * @return int
      */
     public function getInitiatorType(): int
     {
-        return $this->InitiatorType;
+        return $this->initiatorType;
     }
 
     /**
-     * @param int $InitiatorType
+     * @param int $initiatorType
+     *
+     * @return Initiator
      */
-    public function setInitiatorType(int $InitiatorType): void
+    public function setInitiatorType(int $initiatorType): Initiator
     {
-        $this->InitiatorType = $InitiatorType;
+        $this->initiatorType = $initiatorType;
+
+        return $this;
     }
 
     /**
@@ -47,15 +56,19 @@ class Initiator  extends AbstractValidateValueObject implements JsonSerializable
      */
     public function getDoctor(): MedicalStaff
     {
-        return $this->Doctor;
+        return $this->doctor;
     }
 
     /**
-     * @param MedicalStaff $Doctor
+     * @param MedicalStaff $doctor
+     *
+     * @return Initiator
      */
-    public function setDoctor(MedicalStaff $Doctor): void
+    public function setDoctor(MedicalStaff $doctor): Initiator
     {
-        $this->Doctor = $Doctor;
+        $this->doctor = $doctor;
+
+        return $this;
     }
 
     /**
@@ -73,9 +86,11 @@ class Initiator  extends AbstractValidateValueObject implements JsonSerializable
      */
     public function validate(): bool
     {
-        parent::validate();
-        if (InitiatorTypeEnum::getValue($this->InitiatorType) === null) {
-            $this->errors['InitiatorType'] = 'Недопустимое значение типа инициатора проведения телемедицинской консультации';
+        if (InitiatorTypeEnum::getValue($this->initiatorType) === null) {
+            $this->errors['initiatorType'] = 'Недопустимое значение типа инициатора проведения телемедицинской консультации';
+        }
+        if ($this->initiatorType === InitiatorTypeEnum::ATTENDING_DOCTOR && $this->doctor === null) {
+            $this->errors['doctor'] = "Для 'initiatorType' = {$this->initiatorType} поле 'doctor' не может быть пустым";
         }
 
         return !(bool)$this->errors;
@@ -95,7 +110,7 @@ class Initiator  extends AbstractValidateValueObject implements JsonSerializable
     protected function getFields(): array
     {
         if ($this->fields === null) {
-            $this->fields = ['InitiatorType', 'Doctor'];
+            $this->fields = ['initiatorType', 'doctor'];
         }
 
         return $this->fields;

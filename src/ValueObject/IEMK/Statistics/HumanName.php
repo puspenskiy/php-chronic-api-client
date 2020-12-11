@@ -3,6 +3,7 @@
 namespace DocDoc\RgsApiClient\ValueObject\IEMK\Statistics;
 
 use DocDoc\RgsApiClient\ValueObject\AbstractValidateValueObject;
+use DocDoc\RgsApiClient\ValueObject\IEMK\IemkValueObjectTrait;
 use JsonSerializable;
 
 /**
@@ -13,34 +14,32 @@ use JsonSerializable;
  */
 class HumanName extends AbstractValidateValueObject implements JsonSerializable
 {
-    /**
-     * Фамилия пациента
-     *
-     * @var string
-     */
-    private $FamilyName;
+    use IemkValueObjectTrait;
 
-    /**
-     * Имя пациента
-     *
-     * @var string
-     */
-    private $GivenName;
+    /** @var string Фамилия пациента */
+    private $familyName;
+
+    /** @var string Имя пациента */
+    private $givenName;
 
     /**
      * @return string
      */
     public function getFamilyName(): string
     {
-        return $this->FamilyName;
+        return $this->familyName;
     }
 
     /**
-     * @param string $FamilyName
+     * @param string $familyName
+     *
+     * @return HumanName
      */
-    public function setFamilyName(string $FamilyName): void
+    public function setFamilyName(string $familyName): HumanName
     {
-        $this->FamilyName = $FamilyName;
+        $this->familyName = $familyName;
+
+        return $this;
     }
 
     /**
@@ -48,15 +47,19 @@ class HumanName extends AbstractValidateValueObject implements JsonSerializable
      */
     public function getGivenName(): string
     {
-        return $this->GivenName;
+        return $this->givenName;
     }
 
     /**
-     * @param string $GivenName
+     * @param string $givenName
+     *
+     * @return HumanName
      */
-    public function setGivenName(string $GivenName): void
+    public function setGivenName(string $givenName): HumanName
     {
-        $this->GivenName = $GivenName;
+        $this->givenName = $givenName;
+
+        return $this;
     }
 
 
@@ -74,7 +77,7 @@ class HumanName extends AbstractValidateValueObject implements JsonSerializable
     protected function getFields(): array
     {
         if ($this->fields === null) {
-            $this->fields = ['FamilyName', 'GivenName'];
+            $this->fields = ['familyName', 'givenName'];
         }
 
         return $this->fields;

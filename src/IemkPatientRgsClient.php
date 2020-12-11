@@ -60,7 +60,7 @@ class IemkPatientRgsClient extends AbstractRgsClient
      */
     public function createPatient(Patient $patient): ResponseInterface
     {
-        $request = $this->buildRequest('POST', '/api/v1/iemk/patient', json_encode($patient));
+        $request = $this->buildRequest('POST', '/api/v1/iemk/patient', json_encode($patient->toArray()));
 
         return $this->send($request);
     }
@@ -77,7 +77,7 @@ class IemkPatientRgsClient extends AbstractRgsClient
     public function updatePatient(Patient $patient): ResponseInterface
     {
         $url = '/api/v1/iemk/patient/' . $patient->getIdPatientMIS();
-        $request = $this->buildRequest('PATCH', $url, json_encode($patient));
+        $request = $this->buildRequest('PATCH', $url, json_encode($patient->toArray()));
 
         return $this->send($request);
     }

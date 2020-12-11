@@ -12,5 +12,5 @@ class TelemedCaseFormEnum extends AbstractBaseEnum
 {
     public const ROUTINE = 1;
     public const URGENT = 2;
-    public const  EMERGENCY = 3;
+    public const EMERGENCY = 3;
 }
