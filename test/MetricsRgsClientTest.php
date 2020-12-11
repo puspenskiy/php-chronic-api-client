@@ -3,6 +3,7 @@
 namespace DocDoc\RgsApiClient\test;
 
 use DateTimeImmutable;
+use DocDoc\RgsApiClient\Dto\DoctorCommentDto;
 use DocDoc\RgsApiClient\Dto\MetricDTO;
 use DocDoc\RgsApiClient\Dto\MetricRangeDTO;
 use DocDoc\RgsApiClient\Dto\MetricsRangeDTO;
@@ -128,6 +129,22 @@ class MetricsRgsClientTest extends TestCase
 			json_decode($response->getBody()->getContents(), true),
 			json_decode($expectedResponseData, true)
 		);
+	}
+
+    /**
+     * @covers ::addDoctorComment
+     *
+     * @throws BaseRgsException
+     * @throws InternalErrorRgsException
+     * @throws \DocDoc\RgsApiClient\Exception\BadRequestRgsException
+     */
+    public function testAddDoctorComment(): void
+    {
+        $doctorComment = new DoctorCommentDto();
+        $doctorComment->setDoctorComment('Комментарий');
+
+        $response = $this->client->addDoctorComment(10, 20, $doctorComment);
+        $this->assertEquals($response, '');
 	}
 
 	public function createDataProvider(): array

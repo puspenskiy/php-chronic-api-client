@@ -20,5 +20,5 @@ class InitiatorTypeEnum extends AbstractBaseEnum
     public const REGISTRAR = 7;
     public const DEPARTMENT_OF_RESIDENCE = 8;
     public const RESIDENT = 9;
-    public const  INTERN = 10;
+    public const INTERN = 10;
 }
