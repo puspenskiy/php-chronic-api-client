@@ -142,9 +142,35 @@ class PatientsRgsClientTest extends TestCase
 	 */
 	public function testInactivate(string $extendedJson): void
 	{
-		$response = $this->client->activate(100);
+		$response = $this->client->inactivate(100, 1);
 		$this->assertFieldsResponse($response, $extendedJson);
 	}
+
+    /**
+     * @covers ::enableMonitoring
+     *
+     * @throws InternalErrorRgsException
+     * @throws BaseRgsException
+     */
+	public function testEnableMonitoring(): void
+    {
+        $response = $this->client->enableMonitoring(100);
+        $this->assertEquals('', $response->getBody()->getContents());
+        $this->assertEquals(200, $response->getStatusCode());
+    }
+
+    /**
+     * @covers ::disableMonitoring
+     *
+     * @throws InternalErrorRgsException
+     * @throws BaseRgsException
+     */
+    public function testDisableMonitoring(): void
+    {
+        $response = $this->client->disableMonitoring(100);
+        $this->assertEquals('', $response->getBody()->getContents());
+        $this->assertEquals(200, $response->getStatusCode());
+    }
 
 	public function successJsonSerializeDataProvider(): array
 	{
