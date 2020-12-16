@@ -11,7 +11,6 @@ use JsonSerializable;
  * Объект Ответственный медицинский работник ЕГИСЗ ИЭМК
  * Валидируется, имеет Json представление согласно спецификации, имеет методы управления состоянием
  * Применяется для создания случая обслуживания в сервисе ЕГИСЗ ИЭМК
- *
  */
 class Participant extends AbstractValidateValueObject implements JsonSerializable
 {

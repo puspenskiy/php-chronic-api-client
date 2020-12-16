@@ -31,10 +31,10 @@ class Patient extends AbstractValidateValueObject implements JsonSerializable
     private $sex;
 
     /** @var string Дата рождения */
-    private $BirthDate;
+    private $birthDate;
 
     /** @var string  Внешний идентификатор пациента (External id) */
-    private $IdPatientMIS;
+    private $idPatientMIS;
 
     /**
      * @return string
@@ -121,17 +121,17 @@ class Patient extends AbstractValidateValueObject implements JsonSerializable
      */
     public function getBirthDate(): string
     {
-        return $this->BirthDate;
+        return $this->birthDate;
     }
 
     /**
-     * @param string $BirthDate
+     * @param string $birthDate
      *
      * @return Patient
      */
-    public function setBirthDate(string $BirthDate): Patient
+    public function setBirthDate(string $birthDate): Patient
     {
-        $this->BirthDate = $BirthDate;
+        $this->birthDate = $birthDate;
 
         return $this;
     }
@@ -141,17 +141,17 @@ class Patient extends AbstractValidateValueObject implements JsonSerializable
      */
     public function getIdPatientMIS(): string
     {
-        return $this->IdPatientMIS;
+        return $this->idPatientMIS;
     }
 
     /**
-     * @param string $IdPatientMIS
+     * @param string $idPatientMIS
      *
      * @return Patient
      */
-    public function setIdPatientMIS(string $IdPatientMIS): Patient
+    public function setIdPatientMIS(string $idPatientMIS): Patient
     {
-        $this->IdPatientMIS = $IdPatientMIS;
+        $this->idPatientMIS = $idPatientMIS;
 
         return $this;
     }

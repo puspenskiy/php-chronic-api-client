@@ -10,7 +10,6 @@ use JsonSerializable;
  * Объект Медицинский работник ЕГИСЗ ИЭМК
  * Валидируется, имеет Json представление согласно спецификации, имеет методы управления состоянием
  * Применяется для создания случая обслуживания в сервисе ЕГИСЗ ИЭМК
- *
  */
 class MedicalStaff extends AbstractValidateValueObject implements JsonSerializable
 {
@@ -19,6 +18,7 @@ class MedicalStaff extends AbstractValidateValueObject implements JsonSerializab
     /**
      * Идентификатор специальности медицинского работника.
      * (Справочник OID:1.2.643.5.1.13.2.1.1.181)
+     * http://b2b-demo.n3health.ru/nsiui/Dictionary/1.2.643.5.1.13.2.1.1.181
      * @var int
      */
     private $idSpeciality;
@@ -26,6 +26,7 @@ class MedicalStaff extends AbstractValidateValueObject implements JsonSerializab
     /**
      * Идентификатор должности медицинского работника.
      * (Справочник OID:1.2.643.5.1.13.2.1.1.607)
+     * http://b2b-demo.n3health.ru/nsiui/Dictionary/1.2.643.5.1.13.2.1.1.607
      * @var int
      */
     private $idPosition;

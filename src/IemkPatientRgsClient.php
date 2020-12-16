@@ -76,7 +76,7 @@ class IemkPatientRgsClient extends AbstractRgsClient
      */
     public function updatePatient(Patient $patient): ResponseInterface
     {
-        $url = '/api/v1/iemk/patient/' . $patient->getIdPatientMIS();
+        $url = '/api/v1/iemk/patient';
         $request = $this->buildRequest('PATCH', $url, json_encode($patient->toArray()));
 
         return $this->send($request);
