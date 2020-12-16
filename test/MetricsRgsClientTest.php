@@ -144,7 +144,8 @@ class MetricsRgsClientTest extends TestCase
         $doctorComment->setDoctorComment('Комментарий');
 
         $response = $this->client->addDoctorComment(10, 20, $doctorComment);
-        $this->assertEquals($response, '');
+        $this->assertEquals('', $response->getBody()->getContents());
+        $this->assertEquals(201, $response->getStatusCode());
 	}
 
 	public function createDataProvider(): array
@@ -195,6 +196,7 @@ class MetricsRgsClientTest extends TestCase
                        {
                          "value": "10",
                          "datetime": "2020-05-25T15:25:18.281Z",
+                         "id": -100000000,
                          "minValue": "8",
                          "maxValue": "12"
                        }

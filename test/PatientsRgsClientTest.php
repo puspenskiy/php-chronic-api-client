@@ -155,7 +155,8 @@ class PatientsRgsClientTest extends TestCase
 	public function testEnableMonitoring(): void
     {
         $response = $this->client->enableMonitoring(100);
-        $this->assertFieldsResponse($response, '');
+        $this->assertEquals('', $response->getBody()->getContents());
+        $this->assertEquals(200, $response->getStatusCode());
     }
 
     /**
@@ -167,7 +168,8 @@ class PatientsRgsClientTest extends TestCase
     public function testDisableMonitoring(): void
     {
         $response = $this->client->disableMonitoring(100);
-        $this->assertFieldsResponse($response, '');
+        $this->assertEquals('', $response->getBody()->getContents());
+        $this->assertEquals(200, $response->getStatusCode());
     }
 
 	public function successJsonSerializeDataProvider(): array

@@ -6,6 +6,13 @@ use DocDoc\RgsApiClient\ValueObject\AbstractValidateValueObject;
 use DocDoc\RgsApiClient\ValueObject\IEMK\IemkValueObjectTrait;
 use JsonSerializable;
 
+/**
+ * Объект базового типа Медицинские записи.
+ * Реализован базовый подтип ConsultNote для передачи медицинских документов.
+ * Описание: https://api.n3health.ru/docs.php?article=IEMKService#MedDocument
+ * Валидируется, имеет Json представление согласно спецификации, имеет методы управления состоянием
+ * Применяется для создания медицниских заключений по завершенному случаю обслуживания в сервисе ЕГИСЗ ИЭМК
+ */
 class MedRecord  extends AbstractValidateValueObject implements JsonSerializable
 {
     use IemkValueObjectTrait;
@@ -42,19 +49,19 @@ class MedRecord  extends AbstractValidateValueObject implements JsonSerializable
     private $idDocumentMis;
 
     /**
-     * @return mixed
+     * @return DocumentAttachment[]
      */
-    public function getAttachments()
+    public function getAttachments(): array
     {
         return $this->attachments;
     }
 
     /**
-     * @param mixed $attachments
+     * @param DocumentAttachment[] $attachments
      *
      * @return MedRecord
      */
-    public function setAttachments($attachments): MedRecord
+    public function setAttachments(array $attachments): MedRecord
     {
         $this->attachments = $attachments;
 
