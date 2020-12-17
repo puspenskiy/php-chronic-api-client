@@ -101,7 +101,7 @@ class MedicalStaff extends AbstractValidateValueObject implements JsonSerializab
      */
     protected function getRequiredFields(): array
     {
-        return $this->getFields();
+        return ['idSpeciality', 'idPosition'];
     }
 
     /**
