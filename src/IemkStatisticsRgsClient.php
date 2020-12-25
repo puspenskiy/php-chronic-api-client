@@ -53,6 +53,8 @@ class IemkStatisticsRgsClient extends AbstractRgsClient
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
+
+            throw new InternalErrorRgsException($e->getMessage(), $e->getCode(), $e);
         }
 
         return $result;
