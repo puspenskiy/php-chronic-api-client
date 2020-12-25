@@ -41,9 +41,20 @@ class IemkStatisticsRgsClient extends AbstractRgsClient
      */
     public function createTelemedCase(TelemedCase $telemedCase): ResponseInterface
     {
-        $request = $this->buildRequest('POST', '/api/v1/iemk/statistics/telemed-case', json_encode($telemedCase->toArray()));
+        $dataJson = '{}';
+        try {
+            $dataJson =  json_encode($telemedCase->toArray(), JSON_UNESCAPED_UNICODE);
+            $request = $this->buildRequest('POST', '/api/v1/iemk/statistics/telemed-case', $dataJson);
+            $result =  $this->send($request);
+        } catch (\Throwable $e) {
+            $this->logger->error('DEBUG_IEMK', [
+                'data' => $dataJson,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+        }
 
-        return $this->send($request);
+        return $result;
     }
 
     /**

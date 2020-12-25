@@ -30,7 +30,7 @@ abstract class AbstractRgsClient
 	protected $apiParams;
 
 	/** @var LoggerInterface */
-	private $logger;
+	protected $logger;
 
 	/**
 	 * @param ClientInterface       $client
