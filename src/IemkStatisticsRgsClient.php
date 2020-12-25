@@ -42,7 +42,7 @@ class IemkStatisticsRgsClient extends AbstractRgsClient
     public function createTelemedCase(TelemedCase $telemedCase): ResponseInterface
     {
         $dataJson = '{}';
-        $result = null;
+        $result = new \GuzzleHttp\Psr7\Response();
         try {
             $dataJson =  json_encode($telemedCase->toArray(), JSON_UNESCAPED_UNICODE);
             $request = $this->buildRequest('POST', '/api/v1/iemk/statistics/telemed-case', $dataJson);
