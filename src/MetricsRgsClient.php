@@ -8,6 +8,7 @@ use DocDoc\RgsApiClient\Dto\MetricDTO;
 use DocDoc\RgsApiClient\Dto\MetricsDTO;
 use DocDoc\RgsApiClient\Dto\MetricsRangeDTO;
 use DocDoc\RgsApiClient\Enum\MetricTypeEnum;
+use DocDoc\RgsApiClient\Enum\SourceTypeEnum;
 use DocDoc\RgsApiClient\Exception\InternalErrorRgsException;
 use DocDoc\RgsApiClient\Exception\BaseRgsException;
 use Psr\Http\Message\ResponseInterface;
@@ -26,7 +27,35 @@ class MetricsRgsClient extends AbstractRgsClient
     protected const FROM_DATE_FORMAT = 'Y-m-d\TH:i:s';
 
 	/**
-	 * Получение данных анкетирования по указанному пациенту по фильтрам даты и по типу длины данных день|неделя|месяц
+	 * Получение данных анкетирования вместе с комментариями доктора для указанного пациента
+	 * по фильтрам даты и по типу временного периода день|неделя|месяц
+	 *
+	 * @param int $externalId
+	 * @param DateTimeImmutable|null $from
+	 * @param string $type
+	 *
+	 * @return ResponseInterface
+	 * @throws BaseRgsException
+	 * @throws Exception\BadRequestRgsException
+	 * @throws InternalErrorRgsException
+	 */
+	public function getMetricsForDoctor(
+		int $externalId,
+		?DateTimeImmutable $from = null,
+		$type = MetricTypeEnum::WEEK
+	): ResponseInterface
+	{
+		$url = '/api/v1/patient/' . $externalId . '/metrics?type=' . $type . '&source=' . SourceTypeEnum::TELEMED;
+		if ($from !== null) {
+			$url .= '&from=' . urlencode($from->format(self::FROM_DATE_FORMAT));
+		}
+		$request = $this->buildRequest('GET', $url, '');
+		return $this->send($request);
+	}
+
+	/**
+	 * Получение данных анкетирования без комментариев доктора для указанного пациента
+	 * по фильтрам даты и по типу временного периода день|неделя|месяц
 	 *
 	 * @param int                    $externalId
 	 * @param DateTimeImmutable|null $from
