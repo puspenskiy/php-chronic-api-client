@@ -25,7 +25,7 @@ class IemkStatisticsRgsClient extends AbstractRgsClient
     public function getFunctions(): ResponseInterface
     {
         $url = '/api/v1/iemk/statistics/functions';
-        $request = $this->buildRequest('GET', $url);
+        $request = $this->buildRequest('GET', $url, '');
 
         return $this->send($request);
     }
@@ -41,7 +41,8 @@ class IemkStatisticsRgsClient extends AbstractRgsClient
      */
     public function createTelemedCase(TelemedCase $telemedCase): ResponseInterface
     {
-        $request = $this->buildRequest('POST', '/api/v1/iemk/statistics/telemed-case', json_encode($telemedCase->toArray()));
+        $url = '/api/v1/iemk/statistics/telemed-case';
+        $request = $this->buildRequest('POST', $url, json_encode($telemedCase->toArray(), JSON_UNESCAPED_UNICODE));
 
         return $this->send($request);
     }
@@ -58,7 +59,7 @@ class IemkStatisticsRgsClient extends AbstractRgsClient
     public function updateTelemedCase(TelemedCase $telemedCase): ResponseInterface
     {
         $url = '/api/v1/iemk/statistics/telemed-case';
-        $request = $this->buildRequest('PATCH', $url, json_encode($telemedCase->toArray()));
+        $request = $this->buildRequest('PATCH', $url, json_encode($telemedCase->toArray(), JSON_UNESCAPED_UNICODE));
 
         return $this->send($request);
     }
