@@ -6,6 +6,10 @@
 		</testsuite>
 	</testsuites>
 
+	<php>
+		<env name="SYMFONY_DEPRECATIONS_HELPER" value="weak" />
+	</php>
+
 	<logging>
 		<log type="coverage-clover" target="clover.xml"/>
 		<log type="junit" target="report.xml"/>
